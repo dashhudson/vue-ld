@@ -31,7 +31,7 @@ Vue.use(DHVueLd, {
 | key                   | description                                                                       | default     | options    |
 | :-------------------- | --------------------------------------------------------------------------------- | ----------- | ---------- |
 | `readyBeforeIdentify` | If set to false, the \$ld.ready will only be true after identify has been called. | `true`      | `Boolean`  |
-| `onIdentify`          | A method called after the identify promise resolves.                              | `undefined` | `function` |
+| `onIdentify`          | A method called after the identify promise resolves; bound to the \$ld context.   | `undefined` | `function` |
 
 ### Template
 

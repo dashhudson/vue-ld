@@ -15,24 +15,15 @@ export default {
 
     const $ld = Vue.observable({
       ldClient,
-      identify(identity, currentBrand) {
+      identify(newUser, hash, callback) {
         this.ready = false;
-        ldClient
-          .identify({
-            key: identity.id,
-            email: identity.email,
-            name: `${identity.first_name} ${identity.last_name}`,
-            custom: {
-              brand: currentBrand.label,
-            },
-          })
-          .then(() => {
-            this.ready = true;
-            if (onIdentify) {
-              const boundOnIdentify = onIdentify.bind($ld);
-              boundOnIdentify();
-            }
-          });
+        ldClient.identify(newUser, hash, callback).then(() => {
+          this.ready = true;
+          if (onIdentify) {
+            const boundOnIdentify = onIdentify.bind($ld);
+            boundOnIdentify();
+          }
+        });
       },
       flags: {},
       ready: false,
