@@ -64,3 +64,10 @@ export default {
   // ...
 };
 ```
+
+#### Arguments
+
+| key            | description                                                                         | options              |
+| :------------- | ----------------------------------------------------------------------------------- | -------------------- |
+| `requiredFlag` | If the given feature flag is false, the user will be redirected to the given route. | `Boolean`            |
+| `route`        | The path or object to be passed to vue router.                                      | `string` or `object` |
