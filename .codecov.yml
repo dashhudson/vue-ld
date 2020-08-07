@@ -1,0 +1,6 @@
+codecov:
+  token: ce07a044-7ed4-4d85-92cb-b9a07a74a567
+  branch: master
+
+ignore:
+  - '.github/workflows'
