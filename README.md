@@ -57,22 +57,20 @@ Vue.use(VueLd, {
 A wrapper around `ldClient.identify` to allow for
 
 ```javascript
-
 const options = {
-  newUser: to
+  newUser: to,
 };
 const vueLdCallback = () => {
   // ...
-}
+};
 
-export defaul {
+export default {
   watch: {
     user(to) {
-      this.$ld.identify(options, vueLdCallback)
-    }
-  }
-}
-
+      this.$ld.identify(options, vueLdCallback);
+    },
+  },
+};
 ```
 
 #### Arguments
