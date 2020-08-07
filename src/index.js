@@ -1,4 +1,4 @@
-import DHVueLd from './plugin';
+import VueLd from './plugin';
 
-export default DHVueLd;
+export default VueLd;
 export { default as ldRedirect } from './mixins/ldRedirect';

@@ -1,20 +1,20 @@
-# Dash Hudson Vue Launch Darkly
+# Vue Launch Darkly
 
 ## Usage
 
 ### Installation
 
 ```bash
-$ npm install --save dh-vue-ld
+$ npm install --save vue-ld
 ```
 
 Main.js
 
 ```javascript
 import Vue from 'vue'
-import DHVueLd from 'dh-vue-ld';
+import VueLd from 'vue-ld';
 
-Vue.use(DHVueLd, {
+Vue.use(VueLd, {
   clientSideId: 'YOUR_CLIENT_SIDE_ID',
   user: {
     key: '...',
@@ -56,7 +56,7 @@ Vue.use(DHVueLd, {
 Adds a temporary redirect watcher that will either redirect or destroy itself after the flags are ready.
 
 ```javascript
-import { ldRedirect } from 'dh-vue-ld';
+import { ldRedirect } from 'vue-ld';
 
 export default {
   // ...

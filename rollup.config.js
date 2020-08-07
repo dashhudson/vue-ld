@@ -1,7 +1,7 @@
 import commonJs from '@rollup/plugin-commonjs';
 import babel from '@rollup/plugin-babel';
 
-const name = 'dh-vue-ld';
+const name = 'vue-ld';
 
 export default {
   input: 'src/index.js',

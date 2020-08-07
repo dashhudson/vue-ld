@@ -1,5 +1,5 @@
 {
-  "name": "dh-vue-ld",
+  "name": "vue-ld",
   "version": "0.1.0",
   "private": true,
   "description": "A Vue.js wrapper for the LaunchDarkly SDK for Browser JavaScript",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dashhudson/dh-vue-ld.git"
+    "url": "git+https://github.com/dashhudson/vue-ld.git"
   },
   "keywords": [
     "vue",
@@ -25,9 +25,9 @@
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dashhudson/dh-vue-ld/issues"
+    "url": "https://github.com/dashhudson/vue-ld/issues"
   },
-  "homepage": "https://github.com/dashhudson/dh-vue-ld#readme",
+  "homepage": "https://github.com/dashhudson/vue-ld#readme",
   "devDependencies": {
     "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.11.0",
