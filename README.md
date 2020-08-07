@@ -12,7 +12,6 @@ Main.js
 
 ```javascript
 import Vue from 'vue'
-import App from './App.vue'
 import DHVueLd from 'dh-vue-ld';
 
 Vue.use(DHVueLd, {
