@@ -1,0 +1,106 @@
+{
+  "name": "vue-ld",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A Vue.js wrapper for the LaunchDarkly SDK for Browser JavaScript",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "scripts": {
+    "build": "rollup -c rollup.config.js",
+    "watch": "rollup -c -w rollup.config.js",
+    "build:prod": "cross-env NODE_ENV=production npm run build",
+    "lint": "vue-cli-service lint --max-warnings 0",
+    "lint:ci": "npm run lint:js -- --no-fix",
+    "test:unit": "vue-cli-service test:unit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dashhudson/vue-ld.git"
+  },
+  "keywords": [
+    "vue",
+    "vuejs",
+    "launchdarkly"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dashhudson/vue-ld/issues"
+  },
+  "homepage": "https://github.com/dashhudson/vue-ld#readme",
+  "devDependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "@rollup/plugin-babel": "^5.1.0",
+    "@rollup/plugin-commonjs": "^14.0.0",
+    "@vue/cli-plugin-eslint": "^4.4.6",
+    "@vue/cli-service": "^4.4.6",
+    "@vue/eslint-config-airbnb": "^5.1.0",
+    "@vue/test-utils": "^1.0.3",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^26.2.2",
+    "codecov": "^3.7.2",
+    "eslint": "^7.6.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "jsdom": "^16.3.0",
+    "prettier": "^2.0.5",
+    "rollup": "^2.23.0",
+    "vue": "^2.6.11",
+    "vue-jest": "^3.0.6",
+    "vue-router": "^3.4.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "dependencies": {
+    "launchdarkly-js-client-sdk": "^2.18.0",
+    "lodash": "^4.17.19"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true,
+      "jest": true
+    },
+    "extends": [
+      "plugin:vue/recommended",
+      "@vue/airbnb",
+      "prettier/vue",
+      "plugin:prettier/recommended",
+      "plugin:cypress/recommended"
+    ],
+    "rules": {
+      "no-param-reassign": [
+        "error",
+        {
+          "props": true,
+          "ignorePropertyModificationsFor": [
+            "acc",
+            "accumulator",
+            "e",
+            "el",
+            "state"
+          ]
+        }
+      ]
+    },
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.js"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "printWidth": 100,
+    "htmlWhitespaceSensitivity": "ignore"
+  }
+}
