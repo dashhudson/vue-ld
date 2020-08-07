@@ -1,4 +1,6 @@
-# Vue Launch Darkly
+# Vue LaunchDarkly
+
+A simple wrapper around the [js-client-sdk](https://github.com/launchdarkly/js-client-sdk) that provides observable feature flags, a ready state to ensure all feature flags are up to date, and other utilities.
 
 ## Usage
 
@@ -28,10 +30,9 @@ Vue.use(VueLd, {
 
 #### Additional Plugin Options
 
-| key                   | description                                                                       | default     | options    |
-| :-------------------- | --------------------------------------------------------------------------------- | ----------- | ---------- |
-| `readyBeforeIdentify` | If set to false, the \$ld.ready will only be true after identify has been called. | `true`      | `Boolean`  |
-| `onIdentify`          | A method called after the identify promise resolves; bound to the \$ld context.   | `undefined` | `function` |
+| key                   | description                                                                        | default | type      |
+| :-------------------- | ---------------------------------------------------------------------------------- | ------- | --------- |
+| `readyBeforeIdentify` | If set to false, the `$ld.ready` will only be true after identify has been called. | `true`  | `Boolean` |
 
 ### Template
 
@@ -51,6 +52,36 @@ Vue.use(VueLd, {
 </template>
 ```
 
+### Identify
+
+A wrapper around `ldClient.identify` to allow for
+
+```javascript
+
+const options = {
+  newUser: to
+};
+const vueLdCallback = () => {
+  // ...
+}
+
+export defaul {
+  watch: {
+    user(to) {
+      this.$ld.identify(options, vueLdCallback)
+    }
+  }
+}
+
+```
+
+#### Arguments
+
+| key             | description                                                                     | type       |
+| :-------------- | ------------------------------------------------------------------------------- | ---------- |
+| `options`       | The standard `ldclient.identify` arguments.                                     | `object`   |
+| `vueLdCallback` | A method called after the identify promise resolves; bound to the \$ld context. | `function` |
+
 ### Redirect Mixin
 
 Adds a temporary redirect watcher that will either redirect or destroy itself after the flags are ready.
@@ -67,7 +98,7 @@ export default {
 
 #### Arguments
 
-| key            | description                                                                         | options              |
+| key            | description                                                                         | type                 |
 | :------------- | ----------------------------------------------------------------------------------- | -------------------- |
 | `requiredFlag` | If the given feature flag is false, the user will be redirected to the given route. | `Boolean`            |
-| `route`        | The path or object to be passed to vue router.                                      | `string` or `object` |
+| `to`           | The path or object which vue router will push.                                      | `string` or `object` |

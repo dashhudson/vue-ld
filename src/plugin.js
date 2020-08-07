@@ -3,25 +3,19 @@ import { formatFlags } from './utils';
 
 export default {
   install(Vue, options) {
-    const {
-      clientSideId,
-      user,
-      options: ldOptions,
-      onIdentify,
-      readyBeforeIdentify = true,
-    } = options;
+    const { clientSideId, user, options: ldOptions, readyBeforeIdentify = true } = options;
 
     const ldClient = LDClient.initialize(clientSideId, user, ldOptions);
 
     const $ld = Vue.observable({
       ldClient,
-      identify(newUser, hash, callback) {
+      identify({ newUser, hash, callback }, vueLdCallback) {
         this.ready = false;
         ldClient.identify(newUser, hash, callback).then(() => {
           this.ready = true;
-          if (onIdentify) {
-            const boundOnIdentify = onIdentify.bind($ld);
-            boundOnIdentify();
+          if (vueLdCallback) {
+            const boundVueLdCallback = vueLdCallback.bind($ld);
+            boundVueLdCallback();
           }
         });
       },
