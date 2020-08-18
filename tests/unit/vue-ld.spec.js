@@ -15,7 +15,7 @@ let server;
 let warnSpy;
 let wrapper;
 
-describe('VueLd', () => {
+describe('VueLd Plugin', () => {
   beforeEach(() => {
     localVue = createLocalVue();
     server = sinon.createFakeServer();

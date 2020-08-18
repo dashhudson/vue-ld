@@ -18,7 +18,7 @@ let mocks;
 let server;
 let wrapper;
 
-describe('VueLd', () => {
+describe('ldRedirect Mixin', () => {
   beforeEach(() => {
     server = sinon.createFakeServer();
     server.autoRespond = true;
