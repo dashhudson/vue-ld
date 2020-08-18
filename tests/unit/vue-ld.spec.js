@@ -1,26 +1,19 @@
 import sinon from 'sinon';
 import { createLocalVue, mount } from '@vue/test-utils';
+import { ldClientReady } from './utils';
+import { vueLdOptions } from './dummy';
 
 import VueLd from '@/plugin';
-
-const vueLdOptions = {
-  clientSideId: 'superSecretToken',
-  user: {
-    key: 'anonymous',
-    email: 'anonymous@test.com',
-    name: 'Anonymous User',
-  },
-};
 
 const Component = {
   template: '<div></div>',
 };
 
-let wrapper;
-let localVue;
-let warnSpy;
 let errorSpy;
+let localVue;
 let server;
+let warnSpy;
+let wrapper;
 
 describe('VueLd', () => {
   beforeEach(() => {
@@ -45,10 +38,11 @@ describe('VueLd', () => {
       localVue,
     });
     expect(wrapper.vm.$ld).not.toBe(undefined);
+    expect(wrapper.vm.$ld.ready).toBe(false);
 
-    wrapper.vm.$ld.ldClient.on('ready', () => {
-      expect(wrapper.vm.$ld.ready).toBe(true);
-    });
+    await ldClientReady(wrapper);
+
+    expect(wrapper.vm.$ld.ready).toBe(true);
   });
 
   it('changes ready state after identify', async () => {
@@ -59,14 +53,19 @@ describe('VueLd', () => {
     wrapper = mount(Component, {
       localVue,
     });
+
     expect(wrapper.vm.$ld).not.toBe(undefined);
+    expect(wrapper.vm.$ld.ready).toBe(false);
 
-    wrapper.vm.$ld.ldClient.on('ready', () => {
-      expect(wrapper.vm.$ld.ready).toBe(false);
+    await ldClientReady(wrapper);
+    expect(wrapper.vm.$ld.ready).toBe(false);
+    await wrapper.vm.$ld.identify({
+      newUser: {
+        key: 'anonymous2',
+        email: 'anonymous2@test.com',
+        name: 'Anonymous User 2',
+      },
     });
-
-    wrapper.vm.$ld.ldClient.on('change', () => {
-      expect(wrapper.vm.$ld.ready).toBe(true);
-    });
+    expect(wrapper.vm.$ld.ready).toBe(true);
   });
 });
