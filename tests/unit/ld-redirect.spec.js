@@ -11,12 +11,11 @@ const Component = {
   template: '<div></div>',
 };
 
-let errorSpy;
+const mixins = [ldRedirect('myFlag', '/')];
+
 let localVue;
-let mixins;
 let mocks;
 let server;
-let warnSpy;
 let wrapper;
 
 describe('VueLd', () => {
@@ -33,7 +32,6 @@ describe('VueLd', () => {
   const finishSetup = async () => {
     localVue = createLocalVue();
     localVue.use(VueLd, vueLdOptions);
-    mixins = [ldRedirect('myFlag', '/')];
     mocks = {
       $router: { push: jest.fn() },
     };
