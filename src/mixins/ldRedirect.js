@@ -9,7 +9,7 @@ export default (requiredFeatureFlag, to) => {
       setLdRedirectWatcher() {
         this.ldRedirectWatcher = this.$watch(
           () => {
-            return this.$ld.ready && !this.$ld[requiredFeatureFlag];
+            return this.$ld.ready && !this.$ld.flags[requiredFeatureFlag];
           },
           (shouldRedirect) => {
             if (shouldRedirect) {
