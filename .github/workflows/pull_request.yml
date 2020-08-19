@@ -10,9 +10,9 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v2
         with:
-          path: ${{INSTALL_RESTORE_PATH}}
-          key: ${{INSTALL_RESTORE_KEY}}
-          restore-keys: ${{INSTALL_RESTORE_KEYS}}
+          path: ${{env.INSTALL_RESTORE_PATH}}
+          key: ${{env.INSTALL_RESTORE_KEY}}
+          restore-keys: ${{env.INSTALL_RESTORE_KEYS}}
       - run: npm i npm@6.11.3 -g && npm ci
   lint:
     needs: install
@@ -24,9 +24,9 @@ jobs:
       - name: Get cached node modules
         uses: actions/cache@v2
         with:
-          path: ${{INSTALL_RESTORE_PATH}}
-          key: ${{INSTALL_RESTORE_KEY}}
-          restore-keys: ${{INSTALL_RESTORE_KEYS}}
+          path: ${{env.INSTALL_RESTORE_PATH}}
+          key: ${{env.INSTALL_RESTORE_KEY}}
+          restore-keys: ${{env.INSTALL_RESTORE_KEYS}}
       - name: Linting
         run: npm run lint:ci
   build:
@@ -39,8 +39,8 @@ jobs:
       - name: Get cached node modules
         uses: actions/cache@v2
         with:
-          path: ${{INSTALL_RESTORE_PATH}}
-          key: ${{INSTALL_RESTORE_KEY}}
-          restore-keys: ${{INSTALL_RESTORE_KEYS}}
+          path: ${{env.INSTALL_RESTORE_PATH}}
+          key: ${{env.INSTALL_RESTORE_KEY}}
+          restore-keys: ${{env.INSTALL_RESTORE_KEYS}}
       - name: Building
         run: npm run build:prod
