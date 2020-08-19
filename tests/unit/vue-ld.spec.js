@@ -9,13 +9,11 @@ const Component = {
   template: '<div></div>',
 };
 
-let errorSpy;
-let localVue;
-let server;
-let warnSpy;
-let wrapper;
-
 describe('VueLd Plugin', () => {
+  let errorSpy;
+  let localVue;
+  let server;
+  let warnSpy;
   beforeEach(() => {
     localVue = createLocalVue();
     server = sinon.createFakeServer();
@@ -32,6 +30,7 @@ describe('VueLd Plugin', () => {
     errorSpy.mockRestore();
   });
 
+  let wrapper;
   it('changes ready state before identify', async () => {
     localVue.use(VueLd, vueLdOptions);
     wrapper = mount(Component, {

@@ -13,22 +13,17 @@ const Component = {
 
 const mixins = [ldRedirect('myFlag', '/')];
 
-let localVue;
-let mocks;
-let server;
-let wrapper;
-
 describe('ldRedirect Mixin', () => {
+  let server;
   beforeEach(() => {
     server = sinon.createFakeServer();
     server.autoRespond = true;
     server.autoRespondAfter = 0;
   });
 
-  afterEach(() => {
-    server.restore();
-  });
-
+  let localVue;
+  let mocks;
+  let wrapper;
   const finishSetup = async () => {
     localVue = createLocalVue();
     localVue.use(VueLd, vueLdOptions);
@@ -42,6 +37,10 @@ describe('ldRedirect Mixin', () => {
     });
     await ldClientReady(wrapper);
   };
+
+  afterEach(() => {
+    server.restore();
+  });
 
   it('redirects without feature flag', async () => {
     const flags = cloneDeep(flagsResponse);
