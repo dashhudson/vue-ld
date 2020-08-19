@@ -1,0 +1,26 @@
+name: 'Base'
+description: 'The initial steps for all jobs.'
+inputs:
+  environment_file:
+    description: 'The dotenv file from which to export environment variables.'
+    required: false
+    default: '.env.development'
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout
+    - uses: actions/checkout@v2
+    - name: Cache node modules
+      uses: actions/cache@v2
+      env:
+        cache-name: dash-web-cached-node-modules
+      with:
+        # npm cache files are stored in `~/.npm` on Linux/macOS
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+    - run: export $( cat ${{ inputs.environment_file }} )
+      shell: bash

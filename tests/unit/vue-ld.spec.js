@@ -1,9 +1,8 @@
 import sinon from 'sinon';
 import { createLocalVue, mount } from '@vue/test-utils';
+import VueLd from '@/plugin';
 import { ldClientReady } from './utils';
 import { vueLdOptions } from './dummy';
-
-import VueLd from '@/plugin';
 
 const Component = {
   template: '<div></div>',

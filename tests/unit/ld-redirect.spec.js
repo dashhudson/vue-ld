@@ -1,11 +1,10 @@
 import sinon from 'sinon';
 import { cloneDeep } from 'lodash';
 import { createLocalVue, mount } from '@vue/test-utils';
+import ldRedirect from '@/mixins/ldRedirect';
+import VueLd from '@/plugin';
 import { ldClientReady } from './utils';
 import { vueLdOptions, flagsResponse } from './dummy';
-import ldRedirect from '@/mixins/ldRedirect';
-
-import VueLd from '@/plugin';
 
 const Component = {
   template: '<div></div>',
