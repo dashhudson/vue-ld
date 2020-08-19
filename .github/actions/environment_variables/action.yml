@@ -1,0 +1,12 @@
+name: "Base"
+description: "The initial steps for all jobs."
+inputs:
+  environment_file:
+    description: "The dotenv file from which to export environment variables."
+    required: false
+    default: ".env.development"
+runs:
+  using: "composite"
+  steps:
+    - run: export $( cat ${{ inputs.environment_file }} )
+      shell: bash
