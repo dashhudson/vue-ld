@@ -4,18 +4,18 @@ jobs:
   install:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup
+      - uses: ../actions/setup
   lint:
     needs: install
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/base
+      - uses: ../actions/base
       - name: Linting
         run: npm run lint:ci
   build:
     needs: [install, lint]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/base
+      - uses: ../actions/base
       - name: Building
         run: npm run build:prod
