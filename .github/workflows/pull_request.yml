@@ -22,7 +22,7 @@ jobs:
           path: $restore-path
           key: $restore-key
           restore-keys: $restore-keys
-      - run: npm i npm@6.11.3 -g && npm ci
+      - run: npm ci
     outputs:
       restore-path: $restore-path
       restore-key: $restore-key
