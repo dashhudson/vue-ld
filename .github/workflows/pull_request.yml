@@ -1,0 +1,21 @@
+name: Lint & Build
+on: pull_request
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/setup
+  lint:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/base
+      - name: Linting
+        run: npm run lint:ci
+  build:
+    needs: [install, lint]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/base
+      - name: Building
+        run: npm run build:prod
