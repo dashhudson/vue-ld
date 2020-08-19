@@ -10,13 +10,16 @@ export default {
     const $ld = Vue.observable({
       ldClient,
       identify({ newUser, hash, callback }, vueLdCallback) {
-        this.ready = false;
-        ldClient.identify(newUser, hash, callback).then(() => {
-          this.ready = true;
-          if (vueLdCallback) {
-            const boundVueLdCallback = vueLdCallback.bind($ld);
-            boundVueLdCallback();
-          }
+        return new Promise((r) => {
+          this.ready = false;
+          ldClient.identify(newUser, hash, callback).then(() => {
+            this.ready = true;
+            if (vueLdCallback) {
+              const boundVueLdCallback = vueLdCallback.bind($ld);
+              boundVueLdCallback();
+            }
+            r();
+          });
         });
       },
       flags: {},
