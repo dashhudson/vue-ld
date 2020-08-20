@@ -10,7 +10,11 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v2
         with:
-          path: ~/.npm
+          path: |
+            ~/.npm
+            ~/cache
+            !~/cache/exclude
+            **/node_modules
           key: ${{ runner.os }}-build-vue-ld-cached-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-vue-ld-cached-node-modules-
@@ -27,7 +31,11 @@ jobs:
       - name: Get cached node modules
         uses: actions/cache@v2
         with:
-          path: ~/.npm
+          path: |
+            ~/.npm
+            ~/cache
+            !~/cache/exclude
+            **/node_modules
           key: ${{ runner.os }}-build-vue-ld-cached-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-vue-ld-cached-node-modules-
@@ -45,7 +53,11 @@ jobs:
       - name: Get cached node modules
         uses: actions/cache@v2
         with:
-          path: ~/.npm
+          path: |
+            ~/.npm
+            ~/cache
+            !~/cache/exclude
+            **/node_modules
           key: ${{ runner.os }}-build-vue-ld-cached-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-vue-ld-cached-node-modules-
