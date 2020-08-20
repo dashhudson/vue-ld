@@ -7,14 +7,26 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
       - uses: ./.github/actions/set_environment_variables
-      - run: echo $INSTALL_RESTORE_KEY
       - name: Cache node modules
         uses: actions/cache@v2
+        env:
+          cache-name: dash-web-cached-node-modules
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          restore-path: ~/.npm
+          restore-key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
         with:
-          path: ${{env.INSTALL_RESTORE_PATH}}
-          key: ${{env.INSTALL_RESTORE_KEY}}
-          restore-keys: ${{env.INSTALL_RESTORE_KEYS}}
+          path: ${{env.restore-path}}
+          key: ${{env.restore-key}}
+          restore-keys: ${{env.restore-keys}}
       - run: npm i npm@6.11.3 -g && npm ci
+    outputs:
+      restore-path: ${{restore-path}}
+      restore-key: ${{restore-key}}
+      restore-keys: ${{restore-keys}}
   lint:
     needs: install
     runs-on: ubuntu-latest
@@ -25,9 +37,9 @@ jobs:
       - name: Get cached node modules
         uses: actions/cache@v2
         with:
-          path: ${{env.INSTALL_RESTORE_PATH}}
-          key: ${{env.INSTALL_RESTORE_KEY}}
-          restore-keys: ${{env.INSTALL_RESTORE_KEYS}}
+          path: ${{needs.install.outputs.restore-path}}
+          key: ${{needs.install.outputs.restore-key}}
+          restore-keys: ${{needs.install.outputs.restore-keys}}
       - name: Linting
         run: npm run lint:ci
   build:
@@ -40,8 +52,8 @@ jobs:
       - name: Get cached node modules
         uses: actions/cache@v2
         with:
-          path: ${{env.INSTALL_RESTORE_PATH}}
-          key: ${{env.INSTALL_RESTORE_KEY}}
-          restore-keys: ${{env.INSTALL_RESTORE_KEYS}}
+          path: ${{needs.install.outputs.restore-path}}
+          key: ${{needs.install.outputs.restore-key}}
+          restore-keys: ${{needs.install.outputs.restore-keys}}
       - name: Building
         run: npm run build:prod
