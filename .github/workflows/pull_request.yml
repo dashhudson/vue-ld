@@ -12,10 +12,10 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v2
         with:
-          path: ${{INSTALL_CACHE_PATH}}
-          key: ${{ runner.os }}-build-${{INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
+          path: ${{env.INSTALL_CACHE_PATH}}
+          key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{INSTALL_CACHE_NAME}}-
+            ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
       - run: npm install
   lint:
     needs: install
@@ -29,10 +29,10 @@ jobs:
       - name: Get cached node modules
         uses: actions/cache@v2
         with:
-          path: ${{INSTALL_CACHE_PATH}}
-          key: ${{ runner.os }}-build-${{INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
+          path: ${{env.INSTALL_CACHE_PATH}}
+          key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{INSTALL_CACHE_NAME}}-
+            ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
       - name: Linting
         run: npm run lint:ci
   build:
@@ -47,10 +47,10 @@ jobs:
       - name: Get cached node modules
         uses: actions/cache@v2
         with:
-          path: ${{INSTALL_CACHE_PATH}}
-          key: ${{ runner.os }}-build-${{INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
+          path: ${{env.INSTALL_CACHE_PATH}}
+          key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{INSTALL_CACHE_NAME}}-
+            ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
       - name: Building
         run: npm run build:prod
   test:
@@ -65,9 +65,9 @@ jobs:
       - name: Get cached node modules
         uses: actions/cache@v2
         with:
-          path: ${{INSTALL_CACHE_PATH}}
-          key: ${{ runner.os }}-build-${{INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
+          path: ${{env.INSTALL_CACHE_PATH}}
+          key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{INSTALL_CACHE_NAME}}-
+            ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
       - name: Testing
         run: npm run test:unit
