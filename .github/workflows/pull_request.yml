@@ -11,9 +11,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{env.INSTALL_CACHE_PATH}}
-          key: ${{ runner.os }}-build-${{INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{INSTALL_CACHE_NAME}}-
+            ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - run: npm ci
@@ -28,9 +28,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{env.INSTALL_CACHE_PATH}}
-          key: ${{ runner.os }}-build-${{INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{INSTALL_CACHE_NAME}}-
+            ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - name: Linting
@@ -46,9 +46,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{env.INSTALL_CACHE_PATH}}
-          key: ${{ runner.os }}-build-${{INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{INSTALL_CACHE_NAME}}-
+            ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - name: Building
