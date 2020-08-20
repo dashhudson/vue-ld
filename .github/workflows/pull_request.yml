@@ -14,8 +14,7 @@ jobs:
         with:
           path: ${{env.INSTALL_CACHE_PATH}}
           key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
+          restore-keys: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
       - run: npm install
   lint:
     needs: install
@@ -31,8 +30,7 @@ jobs:
         with:
           path: ${{env.INSTALL_CACHE_PATH}}
           key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
+          restore-keys: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
       - name: Linting
         run: npm run lint:ci
   build:
@@ -49,8 +47,7 @@ jobs:
         with:
           path: ${{env.INSTALL_CACHE_PATH}}
           key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
+          restore-keys: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
       - name: Building
         run: npm run build:prod
   test:
@@ -67,7 +64,6 @@ jobs:
         with:
           path: ${{env.INSTALL_CACHE_PATH}}
           key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
+          restore-keys: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
       - name: Testing
         run: npm run test:unit
