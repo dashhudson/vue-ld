@@ -6,7 +6,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - run: export $( cat .env.development )
       - name: Cache node modules
         uses: actions/cache@v2
         with:
@@ -27,7 +26,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - run: export $( cat .env.development )
       - name: Get cached node modules
         uses: actions/cache@v2
         with:
@@ -49,7 +47,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - run: export $( cat .env.development )
       - name: Get cached node modules
         uses: actions/cache@v2
         with:
