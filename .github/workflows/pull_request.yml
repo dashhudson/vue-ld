@@ -42,7 +42,7 @@ jobs:
       - name: Linting
         run: npm run lint:ci
   build:
-    needs: [install, lint]
+    needs: install
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -62,3 +62,24 @@ jobs:
             ${{ runner.os }}-
       - name: Building
         run: npm run build:prod
+  test:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Get cached node modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            ~/cache
+            !~/cache/exclude
+            **/node_modules
+          key: ${{ runner.os }}-build-vue-ld-cached-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-vue-ld-cached-node-modules-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Testing
+        run: npm run test:unit
