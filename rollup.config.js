@@ -1,5 +1,6 @@
 import commonJs from '@rollup/plugin-commonjs';
 import babel from '@rollup/plugin-babel';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 const name = 'vue-ld';
 
@@ -11,6 +12,7 @@ export default {
       name,
       format: 'cjs',
       file: 'dist/index.cjs.js',
+      exports: 'auto',
     },
     {
       name,
@@ -19,6 +21,7 @@ export default {
     },
   ],
   plugins: [
+    nodeResolve({ preferBuiltins: false }),
     commonJs({
       include: 'node_modules/**',
     }),
@@ -26,7 +29,7 @@ export default {
       babelrc: false,
       presets: [
         [
-          '@babel/env',
+          '@vue/babel-preset-app',
           {
             debug: true,
             targets: { browsers: ['> 1%', 'last 2 versions', 'ie > 9'] },
@@ -35,6 +38,7 @@ export default {
         ],
       ],
       exclude: 'node_modules/**',
+      babelHelpers: 'runtime',
     }),
   ],
   watch: {

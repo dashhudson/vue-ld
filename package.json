@@ -10,7 +10,7 @@
     "watch": "rollup -c -w rollup.config.js",
     "build:prod": "cross-env NODE_ENV=production npm run build",
     "lint": "vue-cli-service lint --max-warnings 0",
-    "lint:ci": "npm run lint:js -- --no-fix",
+    "lint:ci": "npm run lint -- --no-fix",
     "test:unit": "vue-cli-service test:unit"
   },
   "repository": {
@@ -33,20 +33,24 @@
     "@babel/preset-env": "^7.11.0",
     "@rollup/plugin-babel": "^5.1.0",
     "@rollup/plugin-commonjs": "^14.0.0",
+    "@rollup/plugin-node-resolve": "^9.0.0",
     "@vue/babel-preset-app": "^4.5.3",
     "@vue/cli-plugin-babel": "^4.5.3",
-    "@vue/cli-plugin-eslint": "^4.4.6",
+    "@vue/cli-plugin-eslint": "^4.5.4",
     "@vue/cli-plugin-unit-jest": "^4.5.3",
-    "@vue/cli-service": "^4.4.6",
+    "@vue/cli-service": "^4.5.4",
     "@vue/eslint-config-airbnb": "^5.1.0",
     "@vue/test-utils": "^1.0.3",
     "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^10.1.0",
     "babel-jest": "^26.2.2",
     "codecov": "^3.7.2",
     "core-js": "^3.6.5",
+    "cross-env": "^7.0.2",
     "eslint": "^7.6.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-vue": "^6.2.2",
     "jsdom": "^16.3.0",
     "prettier": "^2.0.5",
     "rollup": "^2.23.0",
@@ -59,53 +63,5 @@
   "dependencies": {
     "launchdarkly-js-client-sdk": "^2.18.0",
     "lodash": "^4.17.19"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true,
-      "jest": true
-    },
-    "extends": [
-      "plugin:vue/recommended",
-      "@vue/airbnb",
-      "prettier/vue",
-      "plugin:prettier/recommended",
-      "plugin:cypress/recommended"
-    ],
-    "rules": {
-      "no-param-reassign": [
-        "error",
-        {
-          "props": true,
-          "ignorePropertyModificationsFor": [
-            "acc",
-            "accumulator",
-            "e",
-            "el",
-            "state"
-          ]
-        }
-      ]
-    },
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "overrides": [
-      {
-        "files": [
-          "**/__tests__/*.js"
-        ],
-        "env": {
-          "jest": true
-        }
-      }
-    ]
-  },
-  "prettier": {
-    "singleQuote": true,
-    "trailingComma": "es5",
-    "printWidth": 100,
-    "htmlWhitespaceSensitivity": "ignore"
   }
 }

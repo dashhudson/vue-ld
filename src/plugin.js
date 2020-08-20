@@ -40,7 +40,7 @@ export default {
         ...formatFlags(flattenedFlags),
       };
     });
-
+    // eslint-disable-next-line no-param-reassign
     Vue.prototype.$ld = $ld;
   },
 };
