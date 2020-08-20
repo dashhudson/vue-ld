@@ -10,10 +10,10 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v2
         with:
-          path: ${{env.INSTALL_CACHE_PATH}}
-          key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
+          path: ~/.npm
+          key: ${{ runner.os }}-build-vue-ld-cached-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
+            ${{ runner.os }}-build-vue-ld-cached-node-modules-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - run: npm ci
@@ -27,10 +27,10 @@ jobs:
       - name: Get cached node modules
         uses: actions/cache@v2
         with:
-          path: ${{env.INSTALL_CACHE_PATH}}
-          key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
+          path: ~/.npm
+          key: ${{ runner.os }}-build-vue-ld-cached-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
+            ${{ runner.os }}-build-vue-ld-cached-node-modules-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - name: Linting
@@ -45,10 +45,10 @@ jobs:
       - name: Get cached node modules
         uses: actions/cache@v2
         with:
-          path: ${{env.INSTALL_CACHE_PATH}}
-          key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
+          path: ~/.npm
+          key: ${{ runner.os }}-build-vue-ld-cached-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
+            ${{ runner.os }}-build-vue-ld-cached-node-modules-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - name: Building
