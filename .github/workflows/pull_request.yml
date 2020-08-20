@@ -22,7 +22,7 @@ jobs:
           path: ${{env.restore-path}}
           key: ${{env.restore-key}}
           restore-keys: ${{env.restore-keys}}
-      - run: npm i npm@6.11.3 -g && npm ci
+      - run: npm ci
     outputs:
       restore-path: ${{env.restore-path}}
       restore-key: ${{env.restore-key}}
