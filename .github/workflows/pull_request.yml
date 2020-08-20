@@ -3,24 +3,18 @@ on: pull_request
 jobs:
   install:
     runs-on: ubuntu-latest
-    outputs:
-      install-cache-key: ${{ env.install-cache-key }}
-      install-cache-restore-keys: ${{ env.install-cache-restore-keys }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
       - uses: c-py/action-dotenv-to-setenv@v1
         with:
           env-file: .env
-      - env:
-          install-cache-key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
-          install-cache-restore-keys: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
       - name: Cache node modules
         uses: actions/cache@v2
         with:
           path: ${{env.INSTALL_CACHE_PATH}}
-          key: ${{ env.install-cache-key }}
-          restore-keys: ${{ env.install-cache-restore-keys }}
+          key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
       - run: npm install
   lint:
     needs: install
@@ -35,8 +29,8 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{env.INSTALL_CACHE_PATH}}
-          key: ${{needs.install.outputs.install-cache-key}}
-          restore-keys: ${{needs.install.outputs.install-cache-restore-keys}}
+          key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
       - name: Linting
         run: npm run lint:ci
   build:
@@ -52,8 +46,8 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{env.INSTALL_CACHE_PATH}}
-          key: ${{needs.install.outputs.install-cache-key}}
-          restore-keys: ${{needs.install.outputs.install-cache-restore-keys}}
+          key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
       - name: Building
         run: npm run build:prod
   test:
@@ -69,7 +63,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{env.INSTALL_CACHE_PATH}}
-          key: ${{needs.install.outputs.install-cache-key}}
-          restore-keys: ${{needs.install.outputs.install-cache-restore-keys}}
+          key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
       - name: Testing
         run: npm run test:unit
