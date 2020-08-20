@@ -85,7 +85,7 @@ export default {
 Adds a temporary redirect watcher that will either redirect or destroy itself after the flags are ready.
 
 ```javascript
-import { ldRedirect } from 'vue-ld';
+import { ldRedirect } from 'vue-ld.mixins';
 
 export default {
   // ...
