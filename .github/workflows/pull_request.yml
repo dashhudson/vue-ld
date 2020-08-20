@@ -19,7 +19,7 @@ jobs:
             ${{ runner.os }}-build-vue-ld-cached-node-modules-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - run: npm ci
+      - run: npm install
   lint:
     needs: install
     runs-on: ubuntu-latest
