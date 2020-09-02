@@ -89,7 +89,7 @@ import { ldRedirectMixin } from 'vue-ld';
 
 export default {
   // ...
-  mixins: [ldRedirect('yourFlag', { name: 'home' })],
+  mixins: [ldRedirectMixin('yourFlag', { name: 'home' })],
   // ...
 };
 ```
