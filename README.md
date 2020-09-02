@@ -14,7 +14,7 @@ Main.js
 
 ```javascript
 import Vue from 'vue'
-import VueLd from 'vue-ld';
+import { VueLd } from 'vue-ld';
 
 Vue.use(VueLd, {
   clientSideId: 'YOUR_CLIENT_SIDE_ID',
@@ -85,7 +85,7 @@ export default {
 Adds a temporary redirect watcher that will either redirect or destroy itself after the flags are ready.
 
 ```javascript
-import { ldRedirect } from 'vue-ld.mixins';
+import { ldRedirectMixin } from 'vue-ld';
 
 export default {
   // ...
