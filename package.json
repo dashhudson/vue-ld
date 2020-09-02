@@ -1,7 +1,6 @@
 {
   "name": "vue-ld",
   "version": "0.1.0",
-  "private": true,
   "description": "A Vue.js wrapper for the LaunchDarkly SDK for Browser JavaScript",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
