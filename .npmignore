@@ -1,0 +1,16 @@
+.codecov.yml
+.editorconfig
+.env
+.eslintrc
+.github/
+.idea/
+.prettierrc
+.vscode/
+babel.config.js
+coverage/
+jest.config.js
+node_modules/
+rollup.config.js
+package/
+src/
+tests/
