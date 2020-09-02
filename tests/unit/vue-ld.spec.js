@@ -2,7 +2,7 @@ import sinon from 'sinon';
 import { createLocalVue, mount } from '@vue/test-utils';
 import VueLd from '@/plugin';
 import { ldClientReady } from './utils';
-import { vueLdOptions } from './dummy';
+import { vueLdOptions, flagsResponse } from './dummy';
 
 const Component = {
   template: '<div></div>',
@@ -18,7 +18,11 @@ describe('VueLd Plugin', () => {
     server = sinon.createFakeServer();
     server.autoRespond = true;
     server.autoRespondAfter = 0;
-    server.respondWith([200, { 'Content-Type': 'application/json' }, '{}']);
+    server.respondWith([
+      200,
+      { 'Content-Type': 'application/json' },
+      JSON.stringify(flagsResponse),
+    ]);
     warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
   });
@@ -65,5 +69,30 @@ describe('VueLd Plugin', () => {
       },
     });
     expect(wrapper.vm.$ld.ready).toBe(true);
+  });
+
+  it('calls vueLdCallback after ready with correct context', async () => {
+    localVue.use(VueLd, {
+      ...vueLdOptions,
+      readyBeforeIdentify: false,
+    });
+    wrapper = mount(Component, {
+      localVue,
+    });
+    const vueLdCallback = jest.fn();
+    await ldClientReady(wrapper);
+    await wrapper.vm.$ld.identify(
+      {
+        newUser: {
+          key: 'anonymous2',
+          email: 'anonymous2@test.com',
+          name: 'Anonymous User 2',
+        },
+      },
+      vueLdCallback
+    );
+
+    expect(vueLdCallback).toBeCalled();
+    expect(vueLdCallback.mock.instances[0]).toBe(wrapper.vm.$ld);
   });
 });
