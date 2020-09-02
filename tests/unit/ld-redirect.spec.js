@@ -12,7 +12,7 @@ const Component = {
 
 const mixins = [ldRedirect('myFlag', '/')];
 
-describe('ldRedirect Mixin', () => {
+describe('ldRedirectMixin', () => {
   let server;
   beforeEach(() => {
     server = sinon.createFakeServer();
