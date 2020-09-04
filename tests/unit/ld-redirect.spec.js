@@ -7,7 +7,7 @@ import { ldClientReady } from './utils';
 import { vueLdOptions, flagsResponse } from './dummy';
 
 const Component = {
-  template: '<div></div>',
+  template: '<div></div>'
 };
 
 const mixins = [ldRedirect('myFlag', '/')];
