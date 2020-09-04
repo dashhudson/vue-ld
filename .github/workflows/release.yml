@@ -16,7 +16,7 @@ jobs:
       - name: Install
         run: npm ci
       - name: Test
-        run: npm test:unit
+        run: npm run test:unit
 
   publish:
     needs: build
