@@ -68,9 +68,22 @@ jobs:
       - name: Testing
         run: npm run test:unit
   codecov:
+    needs: test
     runs-on: ubuntu-latest
     steps:
+      - name: Check out repository
       - uses: actions/checkout@master
-      - uses: codecov/codecov-action@v1
+      - uses: c-py/action-dotenv-to-setenv@v1
+        with:
+          env-file: .env
+      - name: Get cached node modules
+        uses: actions/cache@v2
+        with:
+          path: ${{env.INSTALL_CACHE_PATH}}
+          key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
+      - name: Sending to Codecov
+        uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage/clover.xml
