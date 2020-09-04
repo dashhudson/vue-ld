@@ -51,8 +51,12 @@ export default (requiredFeatureFlag, to) => {
       },
     },
     created() {
-      this.setLdRedirectReadyWatcher();
-      this.setLdRedirectFlagWatcher();
+      if (this.$ld.ready && !this.$ld.flags[to]) {
+        this.$router.push(to);
+      } else if (!this.ldReady) {
+        this.setLdRedirectReadyWatcher();
+        this.setLdRedirectFlagWatcher();
+      }
     },
   };
 };
