@@ -2,27 +2,57 @@ export default (requiredFeatureFlag, to) => {
   return {
     data() {
       return {
-        ldRedirectWatcher: null,
+        ldRedirectReadyWatcher: null,
+        ldRedirectFlagWatcher: null,
       };
     },
+    computed: {
+      ldRedirectShouldRedirect() {
+        return this.$ld.ready && !this.$ld.flags[requiredFeatureFlag];
+      },
+      ldRedirectShouldDestroy() {
+        return this.$ld.ready && this.$ld.flags[requiredFeatureFlag];
+      },
+    },
     methods: {
-      setLdRedirectWatcher() {
-        this.ldRedirectWatcher = this.$watch(
+      setLdRedirectReadyWatcher() {
+        this.ldRedirectReadyWatcher = this.$watch(
           () => {
-            return this.$ld.ready && !this.$ld.flags[requiredFeatureFlag];
+            return this.$ld.ready;
           },
-          (shouldRedirect) => {
-            if (shouldRedirect) {
+          () => {
+            if (this.ldRedirectShouldRedirect) {
               this.$router.push(to);
-            } else if (this.$ld.ready && this.$ld[requiredFeatureFlag]) {
-              this.ldRedirectWatcher(); // unwatch
+            } else if (this.ldRedirectShouldDestroy) {
+              this.ldRedirectDestroyWatchers();
             }
           }
         );
       },
+      setLdRedirectFlagWatcher() {
+        this.ldRedirectFlagWatcher = this.$watch(
+          () => {
+            return this.$ld.flags[requiredFeatureFlag];
+          },
+          () => {
+            if (this.ldRedirectShouldRedirect) {
+              this.$router.push(to);
+            } else if (this.ldRedirectShouldDestroy) {
+              this.ldRedirectDestroyWatchers();
+            }
+          }
+        );
+      },
+      ldRedirectDestroyWatchers() {
+        this.ldRedirectReadyWatcher();
+        this.ldRedirectReadyWatcher = null;
+        this.ldRedirectFlagWatcher();
+        this.ldRedirectFlagWatcher = null;
+      },
     },
     created() {
-      this.setLdRedirectWatcher();
+      this.setLdRedirectReadyWatcher();
+      this.setLdRedirectFlagWatcher();
     },
   };
 };

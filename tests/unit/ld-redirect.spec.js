@@ -50,7 +50,7 @@ describe('ldRedirectMixin', () => {
     expect(wrapper.vm.$router.push).toHaveBeenCalled();
   });
 
-  it('does not redirects with feature flag & destroys watcher', async () => {
+  it('does not redirect with feature flag & destroys watchers', async () => {
     server.respondWith([
       200,
       { 'Content-Type': 'application/json' },
@@ -59,6 +59,7 @@ describe('ldRedirectMixin', () => {
     await finishSetup();
     expect(wrapper.vm.$ld.flags.myFlag).toBe(true);
     expect(wrapper.vm.$router.push).not.toHaveBeenCalled();
-    expect(wrapper.vm.ldRedirectWatcher.name).toStrictEqual('unwatchFn');
+    expect(wrapper.vm.ldRedirectReadyWatcher).toBe(null);
+    expect(wrapper.vm.ldRedirectFlagWatcher).toBe(null);
   });
 });
