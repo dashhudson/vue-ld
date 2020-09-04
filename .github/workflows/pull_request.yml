@@ -72,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-      - uses: actions/checkout@master
+        uses: actions/checkout@master
       - uses: c-py/action-dotenv-to-setenv@v1
         with:
           env-file: .env
