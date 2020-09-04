@@ -50,7 +50,7 @@ describe('ldRedirectMixin', () => {
     expect(wrapper.vm.$router.push).toHaveBeenCalled();
   });
 
-  it('does not redirect with feature flag & destroys watcher', async () => {
+  it('does not redirect with feature flag & destroys watchers', async () => {
     server.respondWith([
       200,
       { 'Content-Type': 'application/json' },
