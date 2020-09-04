@@ -101,5 +101,5 @@ export default {
 
 | key            | description                                                                         | type                 |
 | :------------- | ----------------------------------------------------------------------------------- | -------------------- |
-| `requiredFlag` | If the given feature flag is false, the user will be redirected to the given route. | `Boolean`            |
+| `requiredFlag` | If the given feature flag is false, the user will be redirected to the given route. | `string`             |
 | `to`           | The path or object which vue router will push.                                      | `string` or `object` |
