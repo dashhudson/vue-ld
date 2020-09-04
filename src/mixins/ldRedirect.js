@@ -8,10 +8,10 @@ export default (requiredFeatureFlag, to) => {
     },
     computed: {
       ldRedirectShouldRedirect() {
-        return this.$ld.ready && !this.$ld.flags[requiredFeatureFlag];
+        return this.$ld.ready && !this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag];
       },
       ldRedirectShouldDestroy() {
-        return this.$ld.ready && this.$ld.flags[requiredFeatureFlag];
+        return this.$ld.ready && this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag];
       },
     },
     methods: {
@@ -22,7 +22,7 @@ export default (requiredFeatureFlag, to) => {
           },
           () => {
             if (this.ldRedirectShouldRedirect) {
-              this.$router.push(to);
+              this.$router.push(to == null ? this.ldRedirectTo : to);
             } else if (this.ldRedirectShouldDestroy) {
               this.ldRedirectDestroyWatchers();
             }
@@ -32,11 +32,11 @@ export default (requiredFeatureFlag, to) => {
       setLdRedirectFlagWatcher() {
         this.ldRedirectFlagWatcher = this.$watch(
           () => {
-            return this.$ld.flags[requiredFeatureFlag];
+            return this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag];
           },
           () => {
             if (this.ldRedirectShouldRedirect) {
-              this.$router.push(to);
+              this.$router.push(to == null ? this.ldRedirectTo : to);
             } else if (this.ldRedirectShouldDestroy) {
               this.ldRedirectDestroyWatchers();
             }
@@ -51,8 +51,8 @@ export default (requiredFeatureFlag, to) => {
       },
     },
     created() {
-      if (this.$ld.ready && !this.$ld.flags[to]) {
-        this.$router.push(to);
+      if (this.$ld.ready && !this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag]) {
+        this.$router.push(to == null ? this.ldRedirectTo : to);
       } else if (!this.ldReady) {
         this.setLdRedirectReadyWatcher();
         this.setLdRedirectFlagWatcher();
