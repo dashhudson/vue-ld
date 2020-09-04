@@ -67,3 +67,10 @@ jobs:
           restore-keys: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
       - name: Testing
         run: npm run test:unit
+  codecov:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
