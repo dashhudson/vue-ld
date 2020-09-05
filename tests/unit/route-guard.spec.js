@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 import { cloneDeep } from 'lodash';
 import { createLocalVue, mount } from '@vue/test-utils';
-import RouterGuard from '@/components/RouteGuard.vue';
+import RouterGuard from '@/components/LDRouteGuard.vue';
 import ldRedirect from '@/mixins/ldRedirect';
 import VueLd from '@/plugin';
 import { ldClientReady } from './utils';
