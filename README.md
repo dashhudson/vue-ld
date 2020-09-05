@@ -103,3 +103,30 @@ export default {
 | :------------- | ----------------------------------------------------------------------------------- | -------------------- |
 | `requiredFlag` | If the given feature flag is false, the user will be redirected to the given route. | `string`             |
 | `to`           | The path or object which vue router will push.                                      | `string` or `object` |
+
+### RouteGuard Component
+
+Use this as an intermediary component on a route you need to guard with a feature flag; it is based on the `ldRedirectMixin`.
+
+```javascript
+import RouteGuard from 'vue-ld';
+import SecretComponent from '@/components/Secret';
+
+const route = {
+  path: '/secret',
+  component: RouteGuard,
+  props: {
+    component: SecretComponent,
+    requiredFeatureFlag: 'palantir',
+    to: { name: 'away' },
+  },
+};
+```
+
+#### Props
+
+| key            | description                                                                         | type                 |
+| :------------- | ----------------------------------------------------------------------------------- | -------------------- |
+| `component`    | The component to be rendered given the required feature flag is true.               | `vue component`      |
+| `requiredFlag` | If the given feature flag is false, the user will be redirected to the given route. | `string`             |
+| `to`           | The path or object which vue router will push.                                      | `string` or `object` |

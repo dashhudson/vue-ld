@@ -1,5 +1,5 @@
 <template>
-  <component :is="component" v-if="$ld.ready"></component>
+  <component :is="component" v-if="show"></component>
 </template>
 
 <script>
@@ -11,6 +11,11 @@ export default {
     component: { type: Object, required: true },
     requiredFeatureFlag: { type: String, required: true },
     to: { type: [String, Object], required: true },
+  },
+  computed: {
+    show() {
+      return this.$ld.ready && this.$ld.flags[this.requiredFeatureFlag];
+    },
   },
   created() {
     this.ldRedirectTo = this.to;

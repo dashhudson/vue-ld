@@ -44,10 +44,14 @@ export default (requiredFeatureFlag, to) => {
         );
       },
       ldRedirectDestroyWatchers() {
-        this.ldRedirectReadyWatcher();
-        this.ldRedirectReadyWatcher = null;
-        this.ldRedirectFlagWatcher();
-        this.ldRedirectFlagWatcher = null;
+        if (this.ldRedirectReadyWatcher) {
+          this.ldRedirectReadyWatcher();
+          this.ldRedirectReadyWatcher = null;
+        }
+        if (this.ldRedirectFlagWatcher) {
+          this.ldRedirectFlagWatcher();
+          this.ldRedirectFlagWatcher = null;
+        }
       },
     },
     created() {
