@@ -53,6 +53,7 @@
     "jsdom": "^16.3.0",
     "prettier": "^2.0.5",
     "rollup": "^2.23.0",
+    "rollup-plugin-vue": "^5.1.9",
     "sinon": "^9.0.3",
     "vue": "^2.6.11",
     "vue-jest": "^3.0.6",

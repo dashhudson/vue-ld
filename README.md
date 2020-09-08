@@ -41,16 +41,8 @@ Vue.use(VueLd, {
 
 ```html
 <template>
-  <div v-if="$ld.ready">
+  <div v-if="$ld.ready && $ld.flags.yourFlag">
     // Render after feature flags are ready
-  </div>
-</template>
-```
-
-```html
-<template>
-  <div v-if="$ld.flags.yourFlag">
-    // Render if the feature flag is true
   </div>
 </template>
 ```
@@ -101,5 +93,32 @@ export default {
 
 | key            | description                                                                         | type                 |
 | :------------- | ----------------------------------------------------------------------------------- | -------------------- |
+| `requiredFlag` | If the given feature flag is false, the user will be redirected to the given route. | `string`             |
+| `to`           | The path or object which vue router will push.                                      | `string` or `object` |
+
+### LDRouteGuard Component
+
+Use this as an intermediary component on a route you need to guard with a feature flag; it is based on the `ldRedirectMixin`. All props are passed to the component rendered.
+
+```javascript
+import LDRouteGuard from 'vue-ld';
+import SecretComponent from '@/components/Secret';
+
+const route = {
+  path: '/secret',
+  component: LDRouteGuard,
+  props: {
+    component: SecretComponent,
+    requiredFeatureFlag: 'palantir',
+    to: { name: 'away' },
+  },
+};
+```
+
+#### Props
+
+| key            | description                                                                         | type                 |
+| :------------- | ----------------------------------------------------------------------------------- | -------------------- |
+| `component`    | The component to be rendered given the required feature flag is true.               | `vue component`      |
 | `requiredFlag` | If the given feature flag is false, the user will be redirected to the given route. | `string`             |
 | `to`           | The path or object which vue router will push.                                      | `string` or `object` |

@@ -1,5 +1,6 @@
 import commonJs from '@rollup/plugin-commonjs';
 import babel from '@rollup/plugin-babel';
+import VuePlugin from 'rollup-plugin-vue';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 const name = 'vue-ld';
@@ -25,6 +26,7 @@ export default {
     commonJs({
       include: 'node_modules/**',
     }),
+    VuePlugin(),
     babel({
       babelrc: false,
       presets: [
