@@ -41,16 +41,8 @@ Vue.use(VueLd, {
 
 ```html
 <template>
-  <div v-if="$ld.ready">
+  <div v-if="$ld.ready && $ld.flags.yourFlag">
     // Render after feature flags are ready
-  </div>
-</template>
-```
-
-```html
-<template>
-  <div v-if="$ld.flags.yourFlag">
-    // Render if the feature flag is true
   </div>
 </template>
 ```
