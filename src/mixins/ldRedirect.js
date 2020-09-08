@@ -54,7 +54,7 @@ export default (requiredFeatureFlag, to) => {
         }
       },
     },
-    created() {
+    mounted() {
       if (this.$ld.ready && !this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag]) {
         this.$router.push(to == null ? this.ldRedirectTo : to);
       } else if (!this.ldReady) {
