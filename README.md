@@ -101,7 +101,7 @@ export default {
 Use this as an intermediary component on a route you need to guard with a feature flag; it is based on the `ldRedirectMixin`. All props are passed to the component rendered.
 
 ```javascript
-import LDRouteGuard from 'vue-ld';
+import { LDRouteGuard } from 'vue-ld';
 import SecretComponent from '@/components/Secret';
 
 const route = {
