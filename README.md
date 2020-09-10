@@ -1,6 +1,6 @@
 # Vue LaunchDarkly
 
-[![codecov](https://img.shields.io/codecov/c/github/dashhudson/vue-ld/dev?color=%23d6b034)](https://codecov.io/gh/dashhudson/vue-ld) [![npm version](https://img.shields.io/npm/v/vue-ld?color=%23d6b034)](https://www.npmjs.com/package/ld-vue) [![Last Commit](https://img.shields.io/github/last-commit/dashhudson/vue-ld?color=%23d6b034)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
+[![codecov](https://img.shields.io/codecov/c/github/dashhudson/vue-ld/dev?color=%23d6b034)](https://codecov.io/gh/dashhudson/vue-ld) [![npm version](https://img.shields.io/npm/v/vue-ld?color=%23d6b034)](https://www.npmjs.com/package/vue-ld) [![Last Commit](https://img.shields.io/github/last-commit/dashhudson/vue-ld?color=%23d6b034)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 [![Licence](https://img.shields.io/github/license/dashhudson/vue-ld?color=%23d6b034)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 
 A simple wrapper around the [js-client-sdk](https://github.com/launchdarkly/js-client-sdk) that provides observable feature flags, a ready state to ensure all feature flags are up to date, and other utilities.
@@ -52,17 +52,18 @@ Vue.use(VueLd, {
 A wrapper around `ldClient.identify` to allow for
 
 ```javascript
-const options = {
-  newUser: to,
-};
-const vueLdCallback = () => {
-  // ...
-};
-
 export default {
+  methods: {
+    vueLdCallback() {
+      // ...
+    },
+  },
   watch: {
     user(to) {
-      this.$ld.identify(options, vueLdCallback);
+      const options = {
+        newUser: to,
+      };
+      this.$ld.identify(options, this.vueLdCallback);
     },
   },
 };
