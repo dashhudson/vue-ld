@@ -16,7 +16,7 @@ $ npm install --save vue-ld
 Main.js
 
 ```javascript
-import Vue from 'vue'
+import Vue from 'vue';
 import { VueLd } from 'vue-ld';
 
 Vue.use(VueLd, {
@@ -28,7 +28,8 @@ Vue.use(VueLd, {
   },
   options: {
     // Standard LaunchDarkly JavaScript SDK options
-  }
+  },
+});
 ```
 
 #### Additional Plugin Options
