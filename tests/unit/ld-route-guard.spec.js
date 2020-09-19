@@ -27,7 +27,7 @@ describe('ldRedirectMixin', () => {
   let localVue;
   let mocks;
   let wrapper;
-  const finishSetup = async () => {
+  const finishSetup = async (component = EmptyComponent) => {
     localVue = createLocalVue();
     localVue.use(VueLd, vueLdOptions);
     mocks = {
@@ -38,7 +38,7 @@ describe('ldRedirectMixin', () => {
       mixins,
       mocks,
       propsData: {
-        component: EmptyComponent,
+        component,
         requiredFeatureFlag: 'myFlag',
         to: '/',
       },
@@ -57,6 +57,16 @@ describe('ldRedirectMixin', () => {
     await finishSetup();
     expect(wrapper.vm.$router.push).toHaveBeenCalled();
     expect(wrapper.findComponent(EmptyComponent).exists()).toBe(false);
+  });
+
+  it('redirects without feature flag with dynamically imported component', async () => {
+    const flags = cloneDeep(flagsResponse);
+    flags.myFlag.value = false;
+    server.respondWith([200, { 'Content-Type': 'application/json' }, JSON.stringify(flags)]);
+
+    const dynamicEmptyComponent = new Promise((resolve) => resolve(EmptyComponent));
+    await finishSetup(dynamicEmptyComponent);
+    expect(wrapper.vm.$router.push).toHaveBeenCalled();
   });
 
   it('does not redirect with feature flag & contains component', async () => {
