@@ -10,6 +10,7 @@ jobs:
         with:
           env-file: .env
       - name: Cache node modules
+        id: cache
         uses: actions/cache@v2
         with:
           path: ${{env.INSTALL_CACHE_PATH}}
