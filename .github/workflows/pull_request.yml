@@ -15,7 +15,9 @@ jobs:
           path: ${{env.INSTALL_CACHE_PATH}}
           key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
-      - run: npm install
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm install
   lint:
     needs: install
     runs-on: ubuntu-latest
