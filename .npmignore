@@ -1,3 +1,5 @@
+_config.yml
+_layouts/
 .codecov.yml
 .editorconfig
 .env
@@ -5,12 +7,13 @@
 .github/
 .idea/
 .prettierrc
+*.tgz
 .vscode/
 babel.config.js
 coverage/
 jest.config.js
 node_modules/
-rollup.config.js
 package/
+rollup.config.js
 src/
 tests/
