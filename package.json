@@ -1,6 +1,6 @@
 {
   "name": "vue-ld",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A Vue.js wrapper for the LaunchDarkly SDK for Browser JavaScript",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
@@ -51,6 +51,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-vue": "^6.2.2",
     "jsdom": "^16.3.0",
+    "launchdarkly-js-client-sdk": "^2.18.1",
     "prettier": "^2.0.5",
     "rollup": "^2.23.0",
     "rollup-plugin-vue": "^5.1.9",
@@ -61,7 +62,10 @@
     "vue-template-compiler": "^2.6.11"
   },
   "dependencies": {
-    "launchdarkly-js-client-sdk": "^2.18.0",
     "lodash": "^4.17.19"
-  }
+  },
+  "peerDependencies": {
+    "launchdarkly-js-client-sdk": "^2.18.1"
+  },
+  "sideEffects": false
 }
