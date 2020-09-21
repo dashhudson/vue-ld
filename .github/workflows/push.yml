@@ -7,14 +7,21 @@ jobs:
   codecov:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Check out repository
         uses: actions/checkout@v2
-      - name: Setup
-        uses: actions/setup-node@v1
+      - uses: c-py/action-dotenv-to-setenv@v1
         with:
-          node-version: 12
-      - name: Install
-        run: npm ci
+          env-file: .env
+      - name: Cache node modules
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: ${{env.INSTALL_CACHE_PATH}}
+          key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm install
       - name: Testing
         run: npm run test:unit
       - name: Sending to Codecov
