@@ -16,11 +16,12 @@ export default {
     show() {
       return this.$ld.ready && this.$ld.flags[this.requiredFeatureFlag];
     },
-    componentIsPromise() {
-      return !!this.component && typeof this.component.then === 'function';
-    },
     importedComponent() {
-      return this.componentIsPromise ? () => this.component : this.component;
+      // Handle dynamically imported components
+      if (!!this.component && typeof this.component.then === 'function') {
+        return () => this.component;
+      }
+      return this.component;
     },
   },
   created() {
