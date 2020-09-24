@@ -1,5 +1,6 @@
 # Vue LaunchDarkly
 
+[![Mentioned in Awesome Vue.js](https://awesome.re/mentioned-badge.svg)](https://github.com/vuejs/awesome-vue#integrations)
 [![codecov](https://img.shields.io/codecov/c/github/dashhudson/vue-ld/dev?color=%23d6b034)](https://codecov.io/gh/dashhudson/vue-ld) [![npm version](https://img.shields.io/npm/v/vue-ld?color=%23d6b034)](https://www.npmjs.com/package/vue-ld) [![Last Commit](https://img.shields.io/github/last-commit/dashhudson/vue-ld?color=%23d6b034)](https://github.com/dashhudson/vue-ld/graphs/commit-activity)
 [![Licence](https://img.shields.io/github/license/dashhudson/vue-ld?color=%23d6b034)](https://github.com/dashhudson/vue-ld/blob/dev/LICENSE.txt) [![Stars](https://img.shields.io/github/stars/dashhudson/vue-ld?color=%23d6b034&logoColor=%23d6b034)](https://github.com/dashhudson/vue-ld)
 
