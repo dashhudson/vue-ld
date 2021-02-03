@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - uses: c-py/action-dotenv-to-setenv@v1
+      - uses: c-py/action-dotenv-to-setenv@v2
         with:
           env-file: .env
       - name: Cache node modules
