@@ -125,3 +125,16 @@ const route = {
 | `component`    | The component to be rendered given the required feature flag is true.               | `vue component`      |
 | `requiredFlag` | If the given feature flag is false, the user will be redirected to the given route. | `string`             |
 | `to`           | The path or object which vue router will push.                                      | `string` or `object` |
+
+## Development
+
+After cloning the repo to your machine:
+
+```bash
+$ npm install
+$ npm run watch
+```
+
+### Local
+
+If you wish to test out your changes in another project locally, you can install with `npm install --save <your_local_path_to_/vue-ld>`. Your vue app will detect changes so long as vue-ld is being watched (by running `npm run watch`).
