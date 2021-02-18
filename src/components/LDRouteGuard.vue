@@ -10,11 +10,22 @@ export default {
   props: {
     component: { type: [Function, Object, Promise], required: true },
     requiredFeatureFlag: { type: String, required: true },
-    to: { type: [String, Object], required: true },
+    to: { type: [String, Object, Function], required: true },
+    invertFlag: { type: Boolean, required: false, default: false },
   },
   computed: {
+    // flagValue() {
+    //   console.log("flag value. invertFlag: " + this.invertFlag);
+    //   let res = (
+    //     this.invertFlag
+    //     ? !this.$ld.flags[this.requiredFeatureFlag] 
+    //     : this.$ld.flags[this.requiredFeatureFlag] 
+    //   )
+    //   console.log(res);
+    //   return res
+    // },
     show() {
-      return this.$ld.ready && this.$ld.flags[this.requiredFeatureFlag];
+      return this.$ld.ready && this.flagValue;
     },
     importedComponent() {
       // Handle dynamically imported components

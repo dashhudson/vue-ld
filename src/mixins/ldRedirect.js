@@ -1,4 +1,4 @@
-export default (requiredFeatureFlag, to) => {
+export default (requiredFeatureFlag, to, invertFlag) => {
   return {
     data() {
       return {
@@ -7,11 +7,31 @@ export default (requiredFeatureFlag, to) => {
       };
     },
     computed: {
+      flagValue() {
+        return (
+          this.$ld.ready && (
+            this.invertFlag || invertFlag
+            ? !this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag] 
+            : this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag]
+          )
+        )
+      },
       ldRedirectShouldRedirect() {
+        // HERE
         return this.$ld.ready && !this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag];
       },
       ldRedirectShouldDestroy() {
+        // HERE
         return this.$ld.ready && this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag];
+      },
+      resolveRedirect(){
+        const redirectVal = to == null ? this.ldRedirectTo : to;
+        if (typeof(redirectVal) === 'function') {
+          const boundRedirectTo = redirectVal.bind(this);
+          return boundRedirectTo();
+        } else {
+          return redirectVal;
+        }
       },
     },
     methods: {
@@ -22,7 +42,7 @@ export default (requiredFeatureFlag, to) => {
           },
           () => {
             if (this.ldRedirectShouldRedirect) {
-              this.$router.push(to == null ? this.ldRedirectTo : to);
+              this.$router.push(this.resolveRedirect);
             } else if (this.ldRedirectShouldDestroy) {
               this.ldRedirectDestroyWatchers();
             }
@@ -32,11 +52,12 @@ export default (requiredFeatureFlag, to) => {
       setLdRedirectFlagWatcher() {
         this.ldRedirectFlagWatcher = this.$watch(
           () => {
+            // HERE
             return this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag];
           },
           () => {
             if (this.ldRedirectShouldRedirect) {
-              this.$router.push(to == null ? this.ldRedirectTo : to);
+              this.$router.push(this.resolveRedirect);
             } else if (this.ldRedirectShouldDestroy) {
               this.ldRedirectDestroyWatchers();
             }
@@ -54,9 +75,18 @@ export default (requiredFeatureFlag, to) => {
         }
       },
     },
+    updated(){
+      console.log(this.flagValue);
+    },
     mounted() {
+      // console.log("mounted");
+      // console.log(invertFlag)
+      // console.log(this.invertFlag);
+      // console.log(this.ldRedirectTo);
+      
+      // HERE
       if (this.$ld.ready && !this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag]) {
-        this.$router.push(to == null ? this.ldRedirectTo : to);
+        this.$router.push(this.resolveRedirect);
       } else if (!this.ldReady) {
         this.setLdRedirectReadyWatcher();
         this.setLdRedirectFlagWatcher();
