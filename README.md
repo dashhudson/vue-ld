@@ -137,8 +137,4 @@ $ npm run watch
 
 ### Local
 
-If you wish to test out your changes in another project locally, you can install with your local path to vue-ld. Your vue app will detect changes so long as vue-ld is being watched.
-
-```
-npm install ../path/to/vue-ld
-```
+If you wish to test out your changes in another project locally, you can install with `npm install --save <your_local_path_to_/vue-ld>`. Your vue app will detect changes so long as vue-ld is being watched (by running `npm run watch`).
