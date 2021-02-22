@@ -11,7 +11,9 @@ const Component = {
 };
 
 const createMixin = (props) => {
-  return props ? [ldRedirect(props.flag, props.redirect)] : [ldRedirect('myFlag', '/')];
+  return props
+    ? [ldRedirect(props.flag, props.redirect, props.invertFlag)]
+    : [ldRedirect('myFlag', '/', false)];
 };
 
 describe('ldRedirectMixin', () => {
@@ -69,10 +71,8 @@ describe('ldRedirectMixin', () => {
     const flags = cloneDeep(flagsResponse);
     flags.myFlag.value = false;
     server.respondWith([200, { 'Content-Type': 'application/json' }, JSON.stringify(flags)]);
-    const redirectObj = {to: 'some.route'};
-    await finishSetup(createMixin(
-      { flag: 'myFlag', redirect: redirectObj }
-    ));
+    const redirectObj = { to: 'some.route' };
+    await finishSetup(createMixin({ flag: 'myFlag', redirect: redirectObj, invertFlag: false }));
     expect(wrapper.vm.$ld.flags.myFlag).toBe(false);
     expect(wrapper.vm.$router.push).toBeCalledWith(redirectObj);
   });
@@ -82,12 +82,22 @@ describe('ldRedirectMixin', () => {
     flags.myFlag.value = false;
     server.respondWith([200, { 'Content-Type': 'application/json' }, JSON.stringify(flags)]);
     const redirectObj = { to: 'some.route' };
-    const redirectFunc = () => { return redirectObj };
-    await finishSetup(createMixin(
-      { flag: 'myFlag', redirect: redirectFunc }
-    ));
+    const redirectFunc = () => {
+      return redirectObj;
+    };
+    await finishSetup(createMixin({ flag: 'myFlag', redirect: redirectFunc, invertFlag: false }));
     expect(wrapper.vm.$ld.flags.myFlag).toBe(false);
     expect(wrapper.vm.$router.push).toBeCalledWith(redirectObj);
   });
 
+  it('redirects on true featureflag if invertFlag is set', async () => {
+    const flags = cloneDeep(flagsResponse);
+    flags.myFlag.value = true;
+    server.respondWith([200, { 'Content-Type': 'application/json' }, JSON.stringify(flags)]);
+    await finishSetup(
+      createMixin({ flag: 'myFlag', redirect: { to: 'some.route' }, invertFlag: true })
+    );
+    expect(wrapper.vm.$ld.flags.myFlag).toBe(true);
+    expect(wrapper.vm.$router.push).toHaveBeenCalled();
+  });
 });

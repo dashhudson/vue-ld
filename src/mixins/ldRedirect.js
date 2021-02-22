@@ -4,34 +4,29 @@ export default (requiredFeatureFlag, to, invertFlag) => {
       return {
         ldRedirectReadyWatcher: null,
         ldRedirectFlagWatcher: null,
+        hasBeenDeactivated: false,
       };
     },
     computed: {
-      flagValue() {
-        return (
-          this.$ld.ready && (
-            this.invertFlag || invertFlag
-            ? !this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag] 
-            : this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag]
-          )
-        )
+      ldRedirectFlagValue() {
+        return this.invertFlag || invertFlag
+          ? !this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag]
+          : this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag];
       },
       ldRedirectShouldRedirect() {
-        // HERE
-        return this.$ld.ready && !this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag];
+        return this.$ld.ready && !this.ldRedirectFlagValue;
       },
       ldRedirectShouldDestroy() {
-        // HERE
-        return this.$ld.ready && this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag];
+        return this.$ld.ready && this.ldRedirectFlagValue;
       },
-      resolveRedirect(){
+      resolveRedirect() {
+        // handles 'to' redirect values passed as functions
         const redirectVal = to == null ? this.ldRedirectTo : to;
-        if (typeof(redirectVal) === 'function') {
+        if (typeof redirectVal === 'function') {
           const boundRedirectTo = redirectVal.bind(this);
           return boundRedirectTo();
-        } else {
-          return redirectVal;
         }
+        return redirectVal;
       },
     },
     methods: {
@@ -52,8 +47,7 @@ export default (requiredFeatureFlag, to, invertFlag) => {
       setLdRedirectFlagWatcher() {
         this.ldRedirectFlagWatcher = this.$watch(
           () => {
-            // HERE
-            return this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag];
+            return this.ldRedirectFlagValue;
           },
           () => {
             if (this.ldRedirectShouldRedirect) {
@@ -74,23 +68,25 @@ export default (requiredFeatureFlag, to, invertFlag) => {
           this.ldRedirectFlagWatcher = null;
         }
       },
+      redirectHandler() {
+        if (this.$ld.ready && !this.ldRedirectFlagValue) {
+          this.$router.push(this.resolveRedirect);
+        } else if (!this.ldReady) {
+          this.setLdRedirectReadyWatcher();
+          this.setLdRedirectFlagWatcher();
+        }
+      },
     },
-    updated(){
-      console.log(this.flagValue);
+    activated() {
+      if (this.hasBeenDeactivated) {
+        this.redirectHandler();
+      }
     },
     mounted() {
-      // console.log("mounted");
-      // console.log(invertFlag)
-      // console.log(this.invertFlag);
-      // console.log(this.ldRedirectTo);
-      
-      // HERE
-      if (this.$ld.ready && !this.$ld.flags[requiredFeatureFlag || this.requiredFeatureFlag]) {
-        this.$router.push(this.resolveRedirect);
-      } else if (!this.ldReady) {
-        this.setLdRedirectReadyWatcher();
-        this.setLdRedirectFlagWatcher();
-      }
+      this.redirectHandler();
+    },
+    deactivated() {
+      this.hasBeenDeactivated = true;
     },
   };
 };

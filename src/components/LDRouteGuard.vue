@@ -14,18 +14,8 @@ export default {
     invertFlag: { type: Boolean, required: false, default: false },
   },
   computed: {
-    // flagValue() {
-    //   console.log("flag value. invertFlag: " + this.invertFlag);
-    //   let res = (
-    //     this.invertFlag
-    //     ? !this.$ld.flags[this.requiredFeatureFlag] 
-    //     : this.$ld.flags[this.requiredFeatureFlag] 
-    //   )
-    //   console.log(res);
-    //   return res
-    // },
     show() {
-      return this.$ld.ready && this.flagValue;
+      return this.$ld.ready && this.ldRedirectFlagValue;
     },
     importedComponent() {
       // Handle dynamically imported components
