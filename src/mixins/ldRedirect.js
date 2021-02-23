@@ -4,7 +4,7 @@ export default (requiredFeatureFlag, to, invertFlag) => {
       return {
         ldRedirectReadyWatcher: null,
         ldRedirectFlagWatcher: null,
-        hasBeenDeactivated: false,
+        ldRedirectHasBeenDeactivated: false,
       };
     },
     computed: {
@@ -19,7 +19,7 @@ export default (requiredFeatureFlag, to, invertFlag) => {
       ldRedirectShouldDestroy() {
         return this.$ld.ready && this.ldRedirectFlagValue;
       },
-      resolveRedirect() {
+      ldRedirectResolveTo() {
         // handles 'to' redirect values passed as functions
         const redirectVal = to == null ? this.ldRedirectTo : to;
         if (typeof redirectVal === 'function') {
@@ -37,7 +37,7 @@ export default (requiredFeatureFlag, to, invertFlag) => {
           },
           () => {
             if (this.ldRedirectShouldRedirect) {
-              this.$router.push(this.resolveRedirect);
+              this.$router.push(this.ldRedirectResolveTo);
             } else if (this.ldRedirectShouldDestroy) {
               this.ldRedirectDestroyWatchers();
             }
@@ -51,7 +51,7 @@ export default (requiredFeatureFlag, to, invertFlag) => {
           },
           () => {
             if (this.ldRedirectShouldRedirect) {
-              this.$router.push(this.resolveRedirect);
+              this.$router.push(this.ldRedirectResolveTo);
             } else if (this.ldRedirectShouldDestroy) {
               this.ldRedirectDestroyWatchers();
             }
@@ -68,9 +68,9 @@ export default (requiredFeatureFlag, to, invertFlag) => {
           this.ldRedirectFlagWatcher = null;
         }
       },
-      redirectHandler() {
+      ldRedirectHandler() {
         if (this.$ld.ready && !this.ldRedirectFlagValue) {
-          this.$router.push(this.resolveRedirect);
+          this.$router.push(this.ldRedirectResolveTo);
         } else if (!this.ldReady) {
           this.setLdRedirectReadyWatcher();
           this.setLdRedirectFlagWatcher();
@@ -78,15 +78,16 @@ export default (requiredFeatureFlag, to, invertFlag) => {
       },
     },
     activated() {
-      if (this.hasBeenDeactivated) {
-        this.redirectHandler();
+      // activated lifecycle trigger used for keep-alive components
+      if (this.ldRedirectHasBeenDeactivated) {
+        this.ldRedirectHandler();
       }
     },
     mounted() {
-      this.redirectHandler();
+      this.ldRedirectHandler();
     },
     deactivated() {
-      this.hasBeenDeactivated = true;
+      this.ldRedirectHasBeenDeactivated = true;
     },
   };
 };
