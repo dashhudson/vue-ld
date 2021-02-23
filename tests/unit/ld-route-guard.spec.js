@@ -27,7 +27,7 @@ describe('ldRedirectMixin', () => {
   let localVue;
   let mocks;
   let wrapper;
-  const finishSetup = async (component = EmptyComponent) => {
+  const finishSetup = async (component, invertFlag) => {
     localVue = createLocalVue();
     localVue.use(VueLd, vueLdOptions);
     mocks = {
@@ -41,6 +41,7 @@ describe('ldRedirectMixin', () => {
         component,
         requiredFeatureFlag: 'myFlag',
         to: '/',
+        invertFlag,
       },
     });
     await ldClientReady(wrapper);
@@ -54,7 +55,7 @@ describe('ldRedirectMixin', () => {
     const flags = cloneDeep(flagsResponse);
     flags.myFlag.value = false;
     server.respondWith([200, { 'Content-Type': 'application/json' }, JSON.stringify(flags)]);
-    await finishSetup();
+    await finishSetup(EmptyComponent, false);
     expect(wrapper.vm.$router.push).toHaveBeenCalled();
     expect(wrapper.findComponent(EmptyComponent).exists()).toBe(false);
   });
@@ -65,7 +66,7 @@ describe('ldRedirectMixin', () => {
     server.respondWith([200, { 'Content-Type': 'application/json' }, JSON.stringify(flags)]);
 
     const dynamicEmptyComponent = new Promise((resolve) => resolve(EmptyComponent));
-    await finishSetup(dynamicEmptyComponent);
+    await finishSetup(dynamicEmptyComponent, false);
     expect(wrapper.vm.$router.push).toHaveBeenCalled();
   });
 
@@ -75,8 +76,19 @@ describe('ldRedirectMixin', () => {
       { 'Content-Type': 'application/json' },
       JSON.stringify(flagsResponse),
     ]);
-    await finishSetup();
+    await finishSetup(EmptyComponent, false);
     expect(wrapper.vm.$router.push).not.toHaveBeenCalled();
     expect(wrapper.findComponent(EmptyComponent).exists()).toBe(true);
+  });
+
+  it('redirects with featureflag if invertFlag is set', async () => {
+    server.respondWith([
+      200,
+      { 'Content-Type': 'application/json' },
+      JSON.stringify(flagsResponse),
+    ]);
+    await finishSetup(EmptyComponent, true);
+    expect(wrapper.vm.$router.push).toHaveBeenCalled();
+    expect(wrapper.findComponent(EmptyComponent).exists()).toBe(false);
   });
 });

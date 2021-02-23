@@ -10,11 +10,12 @@ export default {
   props: {
     component: { type: [Function, Object, Promise], required: true },
     requiredFeatureFlag: { type: String, required: true },
-    to: { type: [String, Object], required: true },
+    to: { type: [String, Object, Function], required: true },
+    invertFlag: { type: Boolean, required: false, default: false },
   },
   computed: {
     show() {
-      return this.$ld.ready && this.$ld.flags[this.requiredFeatureFlag];
+      return this.$ld.ready && this.ldRedirectFlagValue;
     },
     importedComponent() {
       // Handle dynamically imported components
