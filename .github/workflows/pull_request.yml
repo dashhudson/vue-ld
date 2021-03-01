@@ -71,7 +71,7 @@ jobs:
       - name: Testing
         run: npm run test:unit
       - name: Sending to Code Climate
-        with:
+        env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
           echo "GIT_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
