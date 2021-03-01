@@ -1,6 +1,5 @@
 _config.yml
 _layouts/
-.codecov.yml
 .editorconfig
 .env
 .eslintrc

@@ -70,7 +70,12 @@ jobs:
           restore-keys: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
       - name: Testing
         run: npm run test:unit
-      - name: Sending to Codecov
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Sending to Code Climate
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        run: |
+          export GIT_SHA=${GITHUB_SHA}
+          export GIT_BRANCH=${GITHUB_REF#refs/heads/}
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter after-build
