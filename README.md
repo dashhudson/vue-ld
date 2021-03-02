@@ -6,6 +6,18 @@
 
 A simple wrapper around the [js-client-sdk](https://github.com/launchdarkly/js-client-sdk) that provides observable feature flags, a ready state to ensure all feature flags are up to date, and routing utilities.
 
+## Flag Types
+LaunchDarkly supports different flag types.
+
+- Boolean flags have two settings: true or false.
+- Multivariate flags have multiple settings that let you define different variations. Those settings include strings, numbers, JSON objects, or JSON arrays.
+
+## Use `invertFlag` with flags
+- Boolean flags
+False by default. If set to true, the inverse of the requiredFlag's value will be used.
+- Multivariate flags
+The flag value can be strings, numbers, JSON objects, or JSON arrays. Therefore, the inverse value of them is `false` , except that the inverse value of `Number(0)` is `true`.  So be careful when using `invertFlag` with Multivariate flags.
+
 ## Usage
 
 ### Installation
@@ -98,7 +110,7 @@ export default {
 | :------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------- |
 | `requiredFlag` | If the given feature flag is false, the user will be redirected to the given route.            | `string`                           |
 | `to`           | The path which vue router will push. Functions passed are expected to resolve to a valid path. | `string`, `object`, or `function`  |
-| `invertFlag`   | If set to true the the inverse of the requiredFlag's value will be used.                       | `boolean`                          |
+| `invertFlag`   | See [Use `invertFlag` with flags](https://github.com/dashhudson/vue-ld#usage)                       | `boolean`                          |
 
 
 ### LDRouteGuard Component
