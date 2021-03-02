@@ -13,9 +13,9 @@ LaunchDarkly supports different flag types.
 - Multivariate flags have multiple settings that let you define different variations. Those settings include `string`, `number`, `JSON` `object`, or `JSON array`.
 
 ## Use `invertFlag` with flags
-- Boolean flags
+- **Boolean flags**:
 `false` by default. If set to `true`, the inverse of the requiredFlag's value will be used.
-- Multivariate flags
+- **Multivariate flags**:
 The flag value can be strings, numbers, JSON objects, or JSON arrays. Therefore, the inverse value of them is `false` , except that the inverse value of `Number(0)` is `true`.  So be careful when using `invertFlag` with Multivariate flags.
 
 ## Usage
