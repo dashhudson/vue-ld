@@ -110,7 +110,7 @@ export default {
 | :------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------- |
 | `requiredFlag` | If the given feature flag is false, the user will be redirected to the given route.            | `string`                           |
 | `to`           | The path which vue router will push. Functions passed are expected to resolve to a valid path. | `string`, `object`, or `function`  |
-| `invertFlag`   | See [Use `invertFlag` with flags](https://github.com/dashhudson/vue-ld#usage)                       | `boolean`                          |
+| `invertFlag`   | See [Use `invertFlag` with flags](https://github.com/dashhudson/vue-ld#use-invertflag-with-flags) | `boolean`                          |
 
 
 ### LDRouteGuard Component
@@ -139,7 +139,7 @@ const route = {
 | `component`    | The component to be rendered given the required feature flag is true.                          | `vue component`                    |
 | `requiredFlag` | If the given feature flag is false, the user will be redirected to the given route.            | `string`                           |
 | `to`           | The path which vue router will push. Functions passed are expected to resolve to a valid path. | `string`, `object`, or `function`  |
-| `invertFlag`   | If set to true the the inverse of the requiredFlag's value will be used.                       | `boolean`                          |
+| `invertFlag`   | See [Use `invertFlag` with flags](https://github.com/dashhudson/vue-ld#use-invertflag-with-flags) | `boolean`                          |
 
 ## Development
 
