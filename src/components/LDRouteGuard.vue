@@ -18,7 +18,6 @@ export default {
       return this.$ld.ready && this.ldRedirectFlagValue;
     },
     importedComponent() {
-      console.log('kk');
       // Handle dynamically imported components
       if (!!this.component && typeof this.component.then === 'function') {
         return () => this.component;
