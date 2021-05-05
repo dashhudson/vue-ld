@@ -101,7 +101,7 @@ describe('VueLd Plugin', () => {
       ...vueLdOptions,
       /*
         Using a proxy like this will allow you to return true for everything
-        not explicitly not on the base object or set later.
+        not explicitly on the base object or set later.
       */
       flagsStub: new Proxy(
         {
