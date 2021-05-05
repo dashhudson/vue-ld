@@ -95,4 +95,27 @@ describe('VueLd Plugin', () => {
     expect(vueLdCallback).toBeCalled();
     expect(vueLdCallback.mock.instances[0]).toBe(wrapper.vm.$ld);
   });
+
+  it('stubs flags when passed the option', async () => {
+    localVue.use(VueLd, {
+      ...vueLdOptions,
+      flagsStub: new Proxy(
+        {
+          never: false,
+        },
+        {
+          get(obj, prop) {
+            const value = obj[prop];
+            return value === undefined ? true : value;
+          },
+        }
+      ),
+    });
+    wrapper = mount(Component, {
+      localVue,
+    });
+
+    expect(wrapper.vm.$ld.flags.never).toBe(false);
+    expect(wrapper.vm.$ld.flags.anythingElse).toBe(true);
+  });
 });
