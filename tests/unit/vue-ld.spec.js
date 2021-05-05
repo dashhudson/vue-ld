@@ -99,6 +99,10 @@ describe('VueLd Plugin', () => {
   it('stubs flags when passed the option', async () => {
     localVue.use(VueLd, {
       ...vueLdOptions,
+      /*
+        Using a proxy like this will allow you to return true for everything
+        not explicitly not on the base object or set later.
+      */
       flagsStub: new Proxy(
         {
           never: false,
@@ -116,6 +120,12 @@ describe('VueLd Plugin', () => {
     });
 
     expect(wrapper.vm.$ld.flags.never).toBe(false);
+    expect(wrapper.vm.$ld.flags.anythingElse).toBe(true);
+
+    wrapper.vm.$ld.flags.neverLater = false;
+    expect(wrapper.vm.$ld.flags.neverLater).toBe(false);
+
+    delete wrapper.vm.$ld.flags.neverLater;
     expect(wrapper.vm.$ld.flags.anythingElse).toBe(true);
   });
 });
