@@ -36,10 +36,10 @@ Vue.use(VueLd, {
 
 #### Additional Plugin Options
 
-| key                   | description                                                                                                                            | default     | type               |
-| :-------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------------ |
-| `readyBeforeIdentify` | If set to false, the `$ld.ready` will only be true after identify has been called.                                                     | `true`      | `Boolean`          |
-| `flagsStub`           | If provided, the ldClient will not be initialized the and `$ld.flags` will set to the provided stub; this can be helpful in e2e tests. | `undefined` | `Object` / `Proxy` |
+| key                   | description                                                                                                                        | default     | type               |
+| :-------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------------ |
+| `readyBeforeIdentify` | If set to false, the `$ld.ready` will only be true after identify has been called.                                                 | `true`      | `Boolean`          |
+| `flagsStub`           | If provided, the ldClient will not be initialized and `$ld.flags` will set to the provided stub; this can be helpful in e2e tests. | `undefined` | `Object` / `Proxy` |
 
 ### Template
 
