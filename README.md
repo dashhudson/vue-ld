@@ -36,9 +36,10 @@ Vue.use(VueLd, {
 
 #### Additional Plugin Options
 
-| key                   | description                                                                        | default | type      |
-| :-------------------- | ---------------------------------------------------------------------------------- | ------- | --------- |
-| `readyBeforeIdentify` | If set to false, the `$ld.ready` will only be true after identify has been called. | `true`  | `Boolean` |
+| key                   | description                                                                                                                        | default     | type               |
+| :-------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------------ |
+| `readyBeforeIdentify` | If set to false, the `$ld.ready` will only be true after identify has been called.                                                 | `true`      | `Boolean`          |
+| `flagsStub`           | If provided, the ldClient will not be initialized and `$ld.flags` will set to the provided stub; this can be helpful in e2e tests. | `undefined` | `Object` / `Proxy` |
 
 ### Template
 
@@ -95,12 +96,11 @@ export default {
 
 #### Arguments
 
-| key            | description                                                                                    | type                               |
-| :------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------- |
-| `requiredFlag` | If the given feature flag is false, the user will be redirected to the given route.            | `string`                           |
-| `to`           | The path which vue router will push. Functions passed are expected to resolve to a valid path. | `string`, `object`, or `function`  |
-| `invertFlag`   | If set to true the the inverse of the requiredFlag's value will be used.                       | `boolean`                          |
-
+| key            | description                                                                                    | type                              |
+| :------------- | ---------------------------------------------------------------------------------------------- | --------------------------------- |
+| `requiredFlag` | If the given feature flag is false, the user will be redirected to the given route.            | `string`                          |
+| `to`           | The path which vue router will push. Functions passed are expected to resolve to a valid path. | `string`, `object`, or `function` |
+| `invertFlag`   | If set to true the the inverse of the requiredFlag's value will be used.                       | `boolean`                         |
 
 ### LDRouteGuard Component
 
@@ -123,12 +123,12 @@ const route = {
 
 #### Props
 
-| key            | description                                                                                    | type                               |
-| :------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------- |
-| `component`    | The component to be rendered given the required feature flag is true.                          | `vue component`                    |
-| `requiredFlag` | If the given feature flag is false, the user will be redirected to the given route.            | `string`                           |
-| `to`           | The path which vue router will push. Functions passed are expected to resolve to a valid path. | `string`, `object`, or `function`  |
-| `invertFlag`   | If set to true the the inverse of the requiredFlag's value will be used.                       | `boolean`                          |
+| key            | description                                                                                    | type                              |
+| :------------- | ---------------------------------------------------------------------------------------------- | --------------------------------- |
+| `component`    | The component to be rendered given the required feature flag is true.                          | `vue component`                   |
+| `requiredFlag` | If the given feature flag is false, the user will be redirected to the given route.            | `string`                          |
+| `to`           | The path which vue router will push. Functions passed are expected to resolve to a valid path. | `string`, `object`, or `function` |
+| `invertFlag`   | If set to true the the inverse of the requiredFlag's value will be used.                       | `boolean`                         |
 
 ## Development
 
