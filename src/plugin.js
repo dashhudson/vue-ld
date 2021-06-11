@@ -20,12 +20,17 @@ export const initialize = ({ clientSideId, user, ldOptions, readyBeforeIdentify 
     },
     flags: {},
     ready: false,
+    error: null,
   };
 
   ldClient.on('ready', () => {
     $ld.flags = formatFlags(ldClient.allFlags());
     $ld.ready = readyBeforeIdentify;
   });
+  // .catch((e) => {
+  //   $ld.error = e;
+  //   throw e;
+  // });
 
   ldClient.on('change', (changes) => {
     const flattenedFlags = Object.fromEntries(
@@ -36,6 +41,12 @@ export const initialize = ({ clientSideId, user, ldOptions, readyBeforeIdentify 
       ...formatFlags(flattenedFlags),
     };
   });
+
+  ldClient.on('error', (e) => {
+    $ld.error = e;
+    throw e;
+  });
+
   return $ld;
 };
 
