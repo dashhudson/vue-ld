@@ -27,10 +27,6 @@ export const initialize = ({ clientSideId, user, ldOptions, readyBeforeIdentify 
     $ld.flags = formatFlags(ldClient.allFlags());
     $ld.ready = readyBeforeIdentify;
   });
-  // .catch((e) => {
-  //   $ld.error = e;
-  //   throw e;
-  // });
 
   ldClient.on('change', (changes) => {
     const flattenedFlags = Object.fromEntries(
