@@ -151,7 +151,7 @@ describe('VueLd Plugin', () => {
         localVue,
       });
       await ldClientReady(wrapper);
-      expect(wrapper.vm.$ld.error).toBeTruthy(undefined);
+      expect(wrapper.vm.$ld.error).toBeTruthy();
     });
   });
 });
