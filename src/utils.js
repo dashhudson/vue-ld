@@ -7,3 +7,8 @@ export const formatFlags = (flags) => {
     })
   );
 };
+
+export const rethrow = (e) => {
+  // Intended to be mocked in tests to avoid uncaught promise rejections in dependencies
+  throw e;
+};

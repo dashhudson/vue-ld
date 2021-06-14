@@ -1,12 +1,20 @@
 import sinon from 'sinon';
 import { createLocalVue, mount } from '@vue/test-utils';
 import VueLd from '@/plugin';
+import { rethrow } from '@/utils';
 import { ldClientReady } from './utils';
 import { vueLdOptions, flagsResponse } from './dummy';
 
 const Component = {
   template: '<div></div>',
 };
+
+jest.mock('@/utils', () => {
+  return {
+    ...jest.requireActual('@/utils'),
+    rethrow: jest.fn(),
+  };
+});
 
 describe('VueLd Plugin', () => {
   let errorSpy;
@@ -145,13 +153,15 @@ describe('VueLd Plugin', () => {
       ]);
     });
 
-    it.only('should set error when ldClient emits an error', async () => {
+    it('should set error when ldClient emits an error', async () => {
       localVue.use(VueLd, vueLdOptions);
       wrapper = mount(Component, {
         localVue,
       });
       await ldClientReady(wrapper);
       expect(wrapper.vm.$ld.error).toBeTruthy();
+      // Should not eat errors
+      expect(rethrow).toHaveBeenCalled();
     });
   });
 });
