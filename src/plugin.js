@@ -1,5 +1,5 @@
 import * as LDClient from 'launchdarkly-js-client-sdk';
-import { formatFlags } from './utils';
+import { formatFlags, rethrow } from './utils';
 
 export const initialize = ({ clientSideId, user, ldOptions, readyBeforeIdentify }) => {
   const ldClient = LDClient.initialize(clientSideId, user, ldOptions);
@@ -20,6 +20,7 @@ export const initialize = ({ clientSideId, user, ldOptions, readyBeforeIdentify 
     },
     flags: {},
     ready: false,
+    error: null,
   };
 
   ldClient.on('ready', () => {
@@ -36,6 +37,12 @@ export const initialize = ({ clientSideId, user, ldOptions, readyBeforeIdentify 
       ...formatFlags(flattenedFlags),
     };
   });
+
+  ldClient.on('error', (e) => {
+    $ld.error = e;
+    rethrow(e);
+  });
+
   return $ld;
 };
 
