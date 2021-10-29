@@ -1,4 +1,4 @@
-import { camelCase } from 'lodash';
+import camelCase from 'lodash/camelCase';
 
 export const formatFlags = (flags) => {
   return Object.fromEntries(
