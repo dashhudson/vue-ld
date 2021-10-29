@@ -104,7 +104,7 @@ export default {
 
 ### LDRouteGuard Component
 
-Use this as an intermediary component on a route you need to guard with a feature flag; it is based on the `ldRedirectMixin`. All props are passed to the component rendered.
+Use this as an intermediary component on a route you need to guard with a feature flag; it is based on the `ldRedirectMixin`.
 
 ```javascript
 import { LDRouteGuard } from 'vue-ld';
@@ -115,6 +115,7 @@ const route = {
   component: LDRouteGuard,
   props: {
     component: SecretComponent,
+    componentProps: { exampleProp: true },
     requiredFeatureFlag: 'palantir',
     to: { name: 'away' },
   },
@@ -123,12 +124,13 @@ const route = {
 
 #### Props
 
-| key            | description                                                                                    | type                              |
-| :------------- | ---------------------------------------------------------------------------------------------- | --------------------------------- |
-| `component`    | The component to be rendered given the required feature flag is true.                          | `vue component`                   |
-| `requiredFlag` | If the given feature flag is false, the user will be redirected to the given route.            | `string`                          |
-| `to`           | The path which vue router will push. Functions passed are expected to resolve to a valid path. | `string`, `object`, or `function` |
-| `invertFlag`   | If set to true the the inverse of the requiredFlag's value will be used.                       | `boolean`                         |
+| key              | description                                                                                    | type                              |
+| :--------------- | ---------------------------------------------------------------------------------------------- | --------------------------------- |
+| `component`      | The component to be rendered given the required feature flag is true.                          | `vue component`                   |
+| `componentProps` | The props object to hand to the component above.                                               | `object`                          |
+| `requiredFlag`   | If the given feature flag is false, the user will be redirected to the given route.            | `string`                          |
+| `to`             | The path which vue router will push. Functions passed are expected to resolve to a valid path. | `string`, `object`, or `function` |
+| `invertFlag`     | If set to true the the inverse of the requiredFlag's value will be used.                       | `boolean`                         |
 
 ## Development
 
