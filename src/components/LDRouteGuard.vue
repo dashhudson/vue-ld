@@ -1,5 +1,5 @@
 <template>
-  <component :is="importedComponent" v-if="show" v-bind="$props"></component>
+  <component :is="importedComponent" v-if="show" v-bind="componentProps"></component>
 </template>
 
 <script>
@@ -9,6 +9,7 @@ export default {
   mixins: [ldRedirectMixin()],
   props: {
     component: { type: [Function, Object, Promise], required: true },
+    componentProps: { type: Object, required: false, default: () => {} },
     requiredFeatureFlag: { type: String, required: true },
     to: { type: [String, Object, Function], required: true },
     invertFlag: { type: Boolean, required: false, default: false },

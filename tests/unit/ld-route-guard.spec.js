@@ -11,8 +11,11 @@ const mixins = [ldRedirect('myFlag', '/')];
 
 const EmptyComponent = {
   name: 'empty-component',
-  render(h) {
-    return h('div');
+  props: {
+    title: { type: String, require: false, default: 'title' },
+  },
+  render(createElement) {
+    return createElement('div', this.title);
   },
 };
 
@@ -27,7 +30,7 @@ describe('ldRedirectMixin', () => {
   let localVue;
   let mocks;
   let wrapper;
-  const finishSetup = async (component, invertFlag) => {
+  const finishSetup = async (component, invertFlag, props = {}) => {
     localVue = createLocalVue();
     localVue.use(VueLd, vueLdOptions);
     mocks = {
@@ -39,6 +42,7 @@ describe('ldRedirectMixin', () => {
       mocks,
       propsData: {
         component,
+        componentProps: props,
         requiredFeatureFlag: 'myFlag',
         to: '/',
         invertFlag,
@@ -79,6 +83,19 @@ describe('ldRedirectMixin', () => {
     await finishSetup(EmptyComponent, false);
     expect(wrapper.vm.$router.push).not.toHaveBeenCalled();
     expect(wrapper.findComponent(EmptyComponent).exists()).toBe(true);
+    expect(wrapper.findComponent(EmptyComponent).html()).toBe('<div>title</div>');
+  });
+
+  it('does not redirect with feature flag & contains component with props', async () => {
+    server.respondWith([
+      200,
+      { 'Content-Type': 'application/json' },
+      JSON.stringify(flagsResponse),
+    ]);
+    await finishSetup(EmptyComponent, false, { title: 'a different title' });
+    expect(wrapper.vm.$router.push).not.toHaveBeenCalled();
+    expect(wrapper.findComponent(EmptyComponent).exists()).toBe(true);
+    expect(wrapper.findComponent(EmptyComponent).html()).toBe('<div>a different title</div>');
   });
 
   it('redirects with featureflag if invertFlag is set', async () => {
