@@ -1,7 +1,7 @@
 import { isVue3 } from 'vue-demi';
 
 const ldRedirect = (requiredFeatureFlag, to, invertFlag) => {
-  return {
+  const mixin = {
     data() {
       return {
         ldRedirectReadyWatcher: null,
@@ -92,10 +92,12 @@ const ldRedirect = (requiredFeatureFlag, to, invertFlag) => {
       this.ldRedirectHasBeenDeactivated = true;
     },
   };
-};
 
-if (isVue3) {
-  ldRedirect.inject = ['$ld'];
-}
+  if (isVue3) {
+    mixin.inject = ['$ld'];
+  }
+
+  return mixin;
+};
 
 export default ldRedirect;

@@ -1,13 +1,16 @@
 import sinon from 'sinon';
-import { createLocalVue, mount } from '@vue/test-utils';
 import VueLd from '@/plugin';
+import { isVue3 } from 'vue-demi';
 import { rethrow } from '@/utils';
-import { ldClientReady } from './utils';
-import { vueLdOptions, flagsResponse } from './dummy';
+import { mount, ldClientReady } from './utils';
+import { defaultVueLdOptions, flagsResponse } from './dummy';
 
 const Component = {
   template: '<div></div>',
 };
+if (isVue3) {
+  Component.inject = ['$ld'];
+}
 
 jest.mock('@/utils', () => {
   return {
@@ -18,13 +21,21 @@ jest.mock('@/utils', () => {
 
 describe('VueLd Plugin', () => {
   let errorSpy;
-  let localVue;
   let server;
   let warnSpy;
-  let wrapper;
+
+  const createComponent = async (vueLdOptions = {}) => {
+    const VueLdPlugin = [
+      VueLd,
+      {
+        ...defaultVueLdOptions,
+        ...vueLdOptions,
+      },
+    ];
+    return mount(Component, { plugins: [VueLdPlugin] });
+  };
 
   beforeEach(() => {
-    localVue = createLocalVue();
     server = sinon.createFakeServer();
     warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
@@ -47,32 +58,24 @@ describe('VueLd Plugin', () => {
       ]);
     });
     it('changes ready state before identify', async () => {
-      localVue.use(VueLd, vueLdOptions);
-      wrapper = mount(Component, {
-        localVue,
-      });
+      const wrapper = await createComponent();
+
       expect(wrapper.vm.$ld).not.toBe(undefined);
-      expect(wrapper.vm.$ld.ready).toBe(false);
+      expect(wrapper.vm.$ld.ready).toBeFalsy();
 
       await ldClientReady(wrapper);
 
-      expect(wrapper.vm.$ld.ready).toBe(true);
+      expect(wrapper.vm.$ld.ready).toBeTruthy();
     });
 
     it('changes ready state after identify', async () => {
-      localVue.use(VueLd, {
-        ...vueLdOptions,
-        readyBeforeIdentify: false,
-      });
-      wrapper = mount(Component, {
-        localVue,
-      });
+      const wrapper = await createComponent({ readyBeforeIdentify: false });
 
       expect(wrapper.vm.$ld).not.toBe(undefined);
-      expect(wrapper.vm.$ld.ready).toBe(false);
+      expect(wrapper.vm.$ld.ready).toBeFalsy();
 
       await ldClientReady(wrapper);
-      expect(wrapper.vm.$ld.ready).toBe(false);
+      expect(wrapper.vm.$ld.ready).toBeFalsy();
       await wrapper.vm.$ld.identify({
         newUser: {
           key: 'anonymous2',
@@ -80,17 +83,11 @@ describe('VueLd Plugin', () => {
           name: 'Anonymous User 2',
         },
       });
-      expect(wrapper.vm.$ld.ready).toBe(true);
+      expect(wrapper.vm.$ld.ready).toBeTruthy();
     });
 
     it('calls vueLdCallback after ready with correct context', async () => {
-      localVue.use(VueLd, {
-        ...vueLdOptions,
-        readyBeforeIdentify: false,
-      });
-      wrapper = mount(Component, {
-        localVue,
-      });
+      const wrapper = await createComponent({ readyBeforeIdentify: false });
       const vueLdCallback = jest.fn();
       await ldClientReady(wrapper);
       await wrapper.vm.$ld.identify(
@@ -109,8 +106,7 @@ describe('VueLd Plugin', () => {
     });
 
     it('stubs flags when passed the option', async () => {
-      localVue.use(VueLd, {
-        ...vueLdOptions,
+      const wrapper = await createComponent({
         /*
           Using a proxy like this will allow you to return true for everything
           not explicitly on the base object or set later.
@@ -127,18 +123,15 @@ describe('VueLd Plugin', () => {
           }
         ),
       });
-      wrapper = mount(Component, {
-        localVue,
-      });
 
-      expect(wrapper.vm.$ld.flags.never).toBe(false);
-      expect(wrapper.vm.$ld.flags.anythingElse).toBe(true);
+      expect(wrapper.vm.$ld.flags.never).toBeFalsy();
+      expect(wrapper.vm.$ld.flags.anythingElse).toBeTruthy();
 
       wrapper.vm.$ld.flags.neverLater = false;
-      expect(wrapper.vm.$ld.flags.neverLater).toBe(false);
+      expect(wrapper.vm.$ld.flags.neverLater).toBeFalsy();
 
       delete wrapper.vm.$ld.flags.neverLater;
-      expect(wrapper.vm.$ld.flags.anythingElse).toBe(true);
+      expect(wrapper.vm.$ld.flags.anythingElse).toBeTruthy();
     });
   });
 
@@ -154,10 +147,7 @@ describe('VueLd Plugin', () => {
     });
 
     it('should set error when ldClient emits an error', async () => {
-      localVue.use(VueLd, vueLdOptions);
-      wrapper = mount(Component, {
-        localVue,
-      });
+      const wrapper = await createComponent();
       await ldClientReady(wrapper);
       expect(wrapper.vm.$ld.error).toBeTruthy();
       // Should not eat errors
