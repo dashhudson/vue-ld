@@ -1,4 +1,6 @@
-export default (requiredFeatureFlag, to, invertFlag) => {
+import { isVue3 } from 'vue-demi';
+
+const ldRedirect = (requiredFeatureFlag, to, invertFlag) => {
   return {
     data() {
       return {
@@ -91,3 +93,9 @@ export default (requiredFeatureFlag, to, invertFlag) => {
     },
   };
 };
+
+if (isVue3) {
+  ldRedirect.inject = ['$ld'];
+}
+
+export default ldRedirect;

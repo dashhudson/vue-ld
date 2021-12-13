@@ -1,9 +1,10 @@
 import * as LDClient from 'launchdarkly-js-client-sdk';
+import { isVue2, reactive } from 'vue-demi';
 import { formatFlags, rethrow } from './utils';
 
 export const initialize = ({ clientSideId, user, ldOptions, readyBeforeIdentify }) => {
   const ldClient = LDClient.initialize(clientSideId, user, ldOptions);
-  const $ld = {
+  const $ld = reactive({
     ldClient,
     identify({ newUser, hash, callback }, vueLdCallback) {
       return new Promise((r) => {
@@ -21,7 +22,7 @@ export const initialize = ({ clientSideId, user, ldOptions, readyBeforeIdentify 
     flags: {},
     ready: false,
     error: null,
-  };
+  });
 
   ldClient.on('ready', () => {
     $ld.flags = formatFlags(ldClient.allFlags());
@@ -57,7 +58,7 @@ const stub = ({ flagsStub, readyBeforeIdentify }) => {
 };
 
 export default {
-  async install(Vue, options) {
+  async install(vue, options) {
     const {
       clientSideId,
       user,
@@ -73,7 +74,12 @@ export default {
     } else {
       $ld = initialize({ clientSideId, user, ldOptions, readyBeforeIdentify });
     }
-    // eslint-disable-next-line no-param-reassign
-    Vue.prototype.$ld = Vue.observable($ld);
+
+    if (isVue2) {
+      // eslint-disable-next-line no-param-reassign
+      vue.prototype.$ld = vue.observable($ld);
+    } else {
+      vue.provide('$ld', $ld);
+    }
   },
 };

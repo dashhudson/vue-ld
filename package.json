@@ -1,6 +1,6 @@
 {
   "name": "vue-ld",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A Vue.js wrapper for the LaunchDarkly SDK for Browser JavaScript",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
@@ -10,7 +10,7 @@
     "build:prod": "cross-env NODE_ENV=production npm run build",
     "lint": "vue-cli-service lint --max-warnings 0",
     "lint:ci": "npm run lint -- --no-fix",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-demi-switch 2 && vue-cli-service test:unit"
   },
   "repository": {
     "type": "git",
@@ -38,6 +38,7 @@
     "@vue/cli-plugin-eslint": "^4.5.4",
     "@vue/cli-plugin-unit-jest": "^4.5.3",
     "@vue/cli-service": "^4.5.4",
+    "@vue/composition-api": "^1.4.1",
     "@vue/eslint-config-airbnb": "^5.1.0",
     "@vue/test-utils": "^1.0.3",
     "babel-core": "^7.0.0-bridge.0",
@@ -61,10 +62,18 @@
     "vue-template-compiler": "^2.6.11"
   },
   "dependencies": {
-    "lodash": "^4.17.19"
+    "lodash": "^4.17.19",
+    "vue-demi": "^0.12.1"
   },
   "peerDependencies": {
-    "launchdarkly-js-client-sdk": "^2.18.1"
+    "@vue/composition-api": "^1.0.0-rc.1",
+    "launchdarkly-js-client-sdk": "^2.18.1",
+    "vue": "^2.0.0 || >=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@vue/composition-api": {
+      "optional": true
+    }
   },
   "sideEffects": false
 }

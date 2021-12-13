@@ -1,11 +1,7 @@
-<template>
-  <component :is="importedComponent" v-if="show" v-bind="componentProps"></component>
-</template>
-
-<script>
+import { h, isVue3 } from 'vue-demi';
 import ldRedirectMixin from '../mixins/ldRedirect';
 
-export default {
+const LDRouteGuard = {
   mixins: [ldRedirectMixin()],
   props: {
     component: { type: [Function, Object, Promise], required: true },
@@ -29,5 +25,19 @@ export default {
   created() {
     this.ldRedirectTo = this.to;
   },
+  render(createElement) {
+    if (this.show) {
+      if (isVue3) {
+        return h(this.importedComponent, { props: this.componentProps });
+      }
+      return createElement(this.importedComponent, { props: this.componentProps });
+    }
+    return null;
+  },
 };
-</script>
+
+if (isVue3) {
+  LDRouteGuard.inject = ['$ld'];
+}
+
+export default LDRouteGuard;
