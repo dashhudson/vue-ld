@@ -77,7 +77,7 @@ export default {
 
     if (isVue2) {
       // eslint-disable-next-line no-param-reassign
-      vue.prototype.$ld = vue.observable($ld);
+      vue.prototype.$ld = $ld;
     } else {
       vue.provide('$ld', $ld);
     }
