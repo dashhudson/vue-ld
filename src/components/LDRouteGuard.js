@@ -1,4 +1,4 @@
-import { h, isVue3, resolveDynamicComponent } from 'vue-demi';
+import { h, isVue3 } from 'vue-demi';
 import ldRedirectMixin from '../mixins/ldRedirect';
 
 const LDRouteGuard = {
@@ -28,7 +28,7 @@ const LDRouteGuard = {
   render(createElement) {
     if (this.show) {
       if (isVue3) {
-        return h(this.importedComponent, { props: this.componentProps });
+        return h(this.importedComponent, { ...this.componentProps });
       }
       return createElement(this.importedComponent, { props: this.componentProps });
     }
