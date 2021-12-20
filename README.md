@@ -5,14 +5,14 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/d87da39dfb63340702bd/test_coverage)](https://codeclimate.com/github/dashhudson/vue-ld/test_coverage) [![npm version](https://img.shields.io/npm/v/vue-ld?color=%23d6b034)](https://www.npmjs.com/package/vue-ld) [![Last Commit](https://img.shields.io/github/last-commit/dashhudson/vue-ld?color=%23d6b034)](https://github.com/dashhudson/vue-ld/graphs/commit-activity)
 [![Licence](https://img.shields.io/github/license/dashhudson/vue-ld?color=%23d6b034)](https://github.com/dashhudson/vue-ld/blob/dev/LICENSE.txt) [![Stars](https://img.shields.io/github/stars/dashhudson/vue-ld?color=%23d6b034&logoColor=%23d6b034)](https://github.com/dashhudson/vue-ld)
 
-A simple wrapper around the [js-client-sdk](https://github.com/launchdarkly/js-client-sdk) that provides observable feature flags, a ready state to ensure all feature flags are up to date, and routing utilities.
+A simple wrapper around the [js-client-sdk](https://github.com/launchdarkly/js-client-sdk) that provides observable feature flags, a ready state to ensure all feature flags are up to date, and routing utilities. Compatabile with both Vue 2 and Vue 3 via [vue-demi](https://github.com/vueuse/vue-demi).
 
-## Usage
+## Installation
 
-### Installation
+### Vue 2
 
 ```bash
-$ npm install --save vue-ld launchdarkly-js-client-sdk
+$ npm install --save vue-ld @vue/composition-api launchdarkly-js-client-sdk
 ```
 
 Main.js
@@ -34,12 +34,45 @@ Vue.use(VueLd, {
 });
 ```
 
+Available globally with `this.$ld`.
+
+### Vue 3
+
+```bash
+$ npm install --save vue-ld launchdarkly-js-client-sdk
+```
+
+Main.js
+
+```javascript
+import { createApp } from 'vue';
+import { VueLd } from 'vue-ld';
+
+const app = createApp(...);
+
+app.use(VueLd, {
+  clientSideId: 'YOUR_CLIENT_SIDE_ID',
+  user: {
+    key: '...',
+    email: '...',
+    name: '...',
+  },
+  options: {
+    // Standard LaunchDarkly JavaScript SDK options
+  },
+});
+```
+
+Must be [injected](https://v3.vuejs.org/guide/component-provide-inject.html) via `'ld'`, then available as `this.$ld`.
+
 #### Additional Plugin Options
 
 | key                   | description                                                                                                                        | default     | type               |
 | :-------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------------ |
 | `readyBeforeIdentify` | If set to false, the `$ld.ready` will only be true after identify has been called.                                                 | `true`      | `Boolean`          |
 | `flagsStub`           | If provided, the ldClient will not be initialized and `$ld.flags` will set to the provided stub; this can be helpful in e2e tests. | `undefined` | `Object` / `Proxy` |
+
+## Usage
 
 ### Template
 
