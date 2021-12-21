@@ -81,7 +81,6 @@ export default {
     } else {
       // eslint-disable-next-line no-param-reassign
       vue.config.globalProperties.$ld = $ld;
-      // vue.provide('$ld', $ld);
     }
   },
 };
