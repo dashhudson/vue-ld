@@ -1,6 +1,5 @@
 import sinon from 'sinon';
 import VueLd from '@/plugin';
-import { isVue3 } from 'vue-demi';
 import { rethrow } from '@/utils';
 import { mount, ldClientReady } from './utils';
 import { defaultVueLdOptions, flagsResponse } from './dummy';
@@ -8,9 +7,6 @@ import { defaultVueLdOptions, flagsResponse } from './dummy';
 const Component = {
   template: '<div></div>',
 };
-if (isVue3) {
-  Component.inject = ['$ld'];
-}
 
 jest.mock('@/utils', () => {
   return {

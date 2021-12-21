@@ -43,7 +43,7 @@ describe('ldRedirectMixin', () => {
     server.restore();
   });
 
-  it('redirects wiout feature flag', async () => {
+  it('redirects without feature flag', async () => {
     const flags = cloneDeep(flagsResponse);
     flags.myFlag.value = false;
     server.respondWith([200, { 'Content-Type': 'application/json' }, JSON.stringify(flags)]);
