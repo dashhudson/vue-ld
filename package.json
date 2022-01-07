@@ -10,6 +10,7 @@
     "build:prod": "npm run use-vue:2 && cross-env NODE_ENV=production npm run build",
     "lint": "vue-cli-service lint --max-warnings 0",
     "lint:ci": "npm run lint -- --no-fix",
+    "test:unit": "npm run test:unit:2 && npm run test:unit:3",
     "test:unit:2": "npm run use-vue:2 && vue-cli-service test:unit",
     "test:unit:3": "npm run use-vue:3 && vue-cli-service test:unit",
     "use-vue:2": "node scripts/swap-vue.js 2 && vue-demi-switch 2",

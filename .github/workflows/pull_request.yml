@@ -69,7 +69,7 @@ jobs:
           key: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
       - name: Testing
-        run: npm run test:unit:2 && npm run test:unit:3
+        run: npm run test:unit
       - name: Sending to Code Climate
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
