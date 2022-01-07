@@ -1,55 +1,57 @@
 import sinon from 'sinon';
 import { cloneDeep } from 'lodash';
-import { createLocalVue, mount } from '@vue/test-utils';
-import RouterGuard from '@/components/LDRouteGuard.vue';
+import { isVue3, h, markRaw } from 'vue-demi';
+import RouterGuard from '@/components/LDRouteGuard';
 import ldRedirect from '@/mixins/ldRedirect';
 import VueLd from '@/plugin';
-import { ldClientReady } from './utils';
-import { vueLdOptions, flagsResponse } from './dummy';
+import { mount, ldClientReady } from './utils';
+import { defaultVueLdOptions, flagsResponse } from './dummy';
 
 const mixins = [ldRedirect('myFlag', '/')];
 
-const EmptyComponent = {
+const EmptyComponent = markRaw({
   name: 'empty-component',
   props: {
-    title: { type: String, require: false, default: 'title' },
+    title: { type: String, required: false, default: 'title' },
   },
   render(createElement) {
+    if (isVue3) {
+      return h('div', this.title);
+    }
     return createElement('div', this.title);
   },
-};
+});
 
-describe('ldRedirectMixin', () => {
+describe('LDRouteGuard', () => {
   let server;
-  beforeEach(() => {
-    server = sinon.createFakeServer();
-    server.autoRespond = true;
-    server.autoRespondAfter = 0;
-  });
-
-  let localVue;
   let mocks;
-  let wrapper;
-  const finishSetup = async (component, invertFlag, props = {}) => {
-    localVue = createLocalVue();
-    localVue.use(VueLd, vueLdOptions);
+
+  const createComponent = async (component, componentProps = {}, invertFlag = false) => {
+    const VueLdPlugin = [VueLd, defaultVueLdOptions];
     mocks = {
       $router: { push: jest.fn() },
     };
-    wrapper = mount(RouterGuard, {
-      localVue,
+    const wrapper = await mount(RouterGuard, {
+      plugins: [VueLdPlugin],
       mixins,
       mocks,
-      propsData: {
+      props: {
         component,
-        componentProps: props,
+        componentProps,
         requiredFeatureFlag: 'myFlag',
         to: '/',
         invertFlag,
       },
     });
     await ldClientReady(wrapper);
+    return wrapper;
   };
+
+  beforeEach(() => {
+    server = sinon.createFakeServer();
+    server.autoRespond = true;
+    server.autoRespondAfter = 0;
+  });
 
   afterEach(() => {
     server.restore();
@@ -59,9 +61,9 @@ describe('ldRedirectMixin', () => {
     const flags = cloneDeep(flagsResponse);
     flags.myFlag.value = false;
     server.respondWith([200, { 'Content-Type': 'application/json' }, JSON.stringify(flags)]);
-    await finishSetup(EmptyComponent, false);
+    const wrapper = await createComponent(EmptyComponent);
     expect(wrapper.vm.$router.push).toHaveBeenCalled();
-    expect(wrapper.findComponent(EmptyComponent).exists()).toBe(false);
+    expect(wrapper.findComponent(EmptyComponent).exists()).toBeFalsy();
   });
 
   it('redirects without feature flag with dynamically imported component', async () => {
@@ -70,7 +72,7 @@ describe('ldRedirectMixin', () => {
     server.respondWith([200, { 'Content-Type': 'application/json' }, JSON.stringify(flags)]);
 
     const dynamicEmptyComponent = new Promise((resolve) => resolve(EmptyComponent));
-    await finishSetup(dynamicEmptyComponent, false);
+    const wrapper = await createComponent(dynamicEmptyComponent);
     expect(wrapper.vm.$router.push).toHaveBeenCalled();
   });
 
@@ -80,10 +82,10 @@ describe('ldRedirectMixin', () => {
       { 'Content-Type': 'application/json' },
       JSON.stringify(flagsResponse),
     ]);
-    await finishSetup(EmptyComponent, false);
+    const wrapper = await createComponent(EmptyComponent);
     expect(wrapper.vm.$router.push).not.toHaveBeenCalled();
-    expect(wrapper.findComponent(EmptyComponent).exists()).toBe(true);
-    expect(wrapper.findComponent(EmptyComponent).html()).toBe('<div>title</div>');
+    expect(wrapper.findComponent(EmptyComponent).exists()).toBeTruthy();
+    expect(wrapper.findComponent(EmptyComponent).text()).toBe('title');
   });
 
   it('does not redirect with feature flag & contains component with props', async () => {
@@ -92,10 +94,10 @@ describe('ldRedirectMixin', () => {
       { 'Content-Type': 'application/json' },
       JSON.stringify(flagsResponse),
     ]);
-    await finishSetup(EmptyComponent, false, { title: 'a different title' });
+    const wrapper = await createComponent(EmptyComponent, { title: 'a different title' });
     expect(wrapper.vm.$router.push).not.toHaveBeenCalled();
-    expect(wrapper.findComponent(EmptyComponent).exists()).toBe(true);
-    expect(wrapper.findComponent(EmptyComponent).html()).toBe('<div>a different title</div>');
+    expect(wrapper.findComponent(EmptyComponent).exists()).toBeTruthy();
+    expect(wrapper.findComponent(EmptyComponent).text()).toBe('a different title');
   });
 
   it('redirects with featureflag if invertFlag is set', async () => {
@@ -104,8 +106,8 @@ describe('ldRedirectMixin', () => {
       { 'Content-Type': 'application/json' },
       JSON.stringify(flagsResponse),
     ]);
-    await finishSetup(EmptyComponent, true);
+    const wrapper = await createComponent(EmptyComponent, {}, true);
     expect(wrapper.vm.$router.push).toHaveBeenCalled();
-    expect(wrapper.findComponent(EmptyComponent).exists()).toBe(false);
+    expect(wrapper.findComponent(EmptyComponent).exists()).toBeFalsy();
   });
 });

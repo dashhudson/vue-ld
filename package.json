@@ -1,16 +1,19 @@
 {
   "name": "vue-ld",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A Vue.js wrapper for the LaunchDarkly SDK for Browser JavaScript",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
   "scripts": {
-    "build": "rollup -c rollup.config.js",
-    "watch": "rollup -c -w rollup.config.js",
-    "build:prod": "cross-env NODE_ENV=production npm run build",
+    "build": "npm run use-vue:2 && rollup -c rollup.config.js",
+    "watch": "npm run use-vue:2 && rollup -c -w rollup.config.js",
+    "build:prod": "npm run use-vue:2 && cross-env NODE_ENV=production npm run build",
     "lint": "vue-cli-service lint --max-warnings 0",
     "lint:ci": "npm run lint -- --no-fix",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit:2": "npm run use-vue:2 && vue-cli-service test:unit",
+    "test:unit:3": "npm run use-vue:3 && vue-cli-service test:unit",
+    "use-vue:2": "node scripts/swap-vue.js 2 && vue-demi-switch 2",
+    "use-vue:3": "node scripts/swap-vue.js 3 && vue-demi-switch 3"
   },
   "repository": {
     "type": "git",
@@ -38,8 +41,10 @@
     "@vue/cli-plugin-eslint": "^4.5.4",
     "@vue/cli-plugin-unit-jest": "^4.5.3",
     "@vue/cli-service": "^4.5.4",
+    "@vue/composition-api": "^1.4.1",
     "@vue/eslint-config-airbnb": "^5.1.0",
     "@vue/test-utils": "^1.0.3",
+    "@vue/test-utils3": "npm:@vue/test-utils@^2.0.0-0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.2.2",
@@ -56,15 +61,24 @@
     "rollup-plugin-vue": "^5.1.9",
     "sinon": "^9.0.3",
     "vue": "^2.6.11",
+    "vue3": "npm:vue@^3.0.0",
     "vue-jest": "^3.0.6",
     "vue-router": "^3.4.2",
     "vue-template-compiler": "^2.6.11"
   },
   "dependencies": {
-    "lodash": "^4.17.19"
+    "lodash": "^4.17.19",
+    "vue-demi": "^0.12.1"
   },
   "peerDependencies": {
-    "launchdarkly-js-client-sdk": "^2.18.1"
+    "@vue/composition-api": "^1.0.0-rc.1",
+    "launchdarkly-js-client-sdk": "^2.18.1",
+    "vue": "^2.0.0 || >=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@vue/composition-api": {
+      "optional": true
+    }
   },
   "sideEffects": false
 }

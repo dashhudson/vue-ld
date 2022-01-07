@@ -1,4 +1,4 @@
-export const vueLdOptions = {
+export const defaultVueLdOptions = {
   clientSideId: 'superSecretToken',
   user: {
     key: 'anonymous',

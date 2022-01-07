@@ -7,7 +7,7 @@ const name = 'vue-ld';
 
 export default {
   input: 'src/index.js',
-  external: ['launchdarkly-js-client-sdk', 'lodash'],
+  external: ['launchdarkly-js-client-sdk', 'lodash', 'vue-demi'],
   output: [
     {
       name,
