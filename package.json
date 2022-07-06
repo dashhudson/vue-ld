@@ -42,7 +42,6 @@
     "@vue/cli-plugin-eslint": "^4.5.19",
     "@vue/cli-plugin-unit-jest": "^4.5.19",
     "@vue/cli-service": "^4.5.4",
-    "@vue/composition-api": "^1.4.1",
     "@vue/eslint-config-airbnb": "^5.1.0",
     "@vue/test-utils": "^1.0.3",
     "@vue/test-utils3": "npm:@vue/test-utils@^2.0.0-0",
@@ -58,14 +57,14 @@
     "rollup": "^2.23.0",
     "rollup-plugin-vue": "^5.1.9",
     "sinon": "^9.0.3",
-    "vue": "~2.6.11",
+    "vue": "~2.7.3",
     "vue3": "npm:vue@^3.0.0",
     "vue-router": "^3.4.2",
-    "vue-template-compiler": "~2.6.11"
+    "vue-template-compiler": "~2.7.3"
   },
   "dependencies": {
     "lodash": "^4.17.19",
-    "vue-demi": "^0.12.1"
+    "vue-demi": "^0.13.2"
   },
   "peerDependencies": {
     "@vue/composition-api": "^1.0.0-rc.1",
