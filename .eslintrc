@@ -7,8 +7,7 @@
   "extends": [
     "plugin:vue/recommended",
     "@vue/airbnb",
-    "prettier/vue",
-    "plugin:prettier/recommended"
+    "prettier"
   ],
   "rules": {
     "no-param-reassign": [

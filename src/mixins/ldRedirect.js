@@ -1,5 +1,4 @@
-export default (requiredFeatureFlag, to, invertFlag) => {
-  return {
+export default (requiredFeatureFlag, to, invertFlag) => ({
     data() {
       return {
         ldRedirectReadyWatcher: null,
@@ -32,9 +31,7 @@ export default (requiredFeatureFlag, to, invertFlag) => {
     methods: {
       setLdRedirectReadyWatcher() {
         this.ldRedirectReadyWatcher = this.$watch(
-          () => {
-            return this.$ld.ready;
-          },
+          () => this.$ld.ready,
           () => {
             if (this.ldRedirectShouldRedirect) {
               this.$router.push(this.ldRedirectResolveTo);
@@ -46,9 +43,7 @@ export default (requiredFeatureFlag, to, invertFlag) => {
       },
       setLdRedirectFlagWatcher() {
         this.ldRedirectFlagWatcher = this.$watch(
-          () => {
-            return this.ldRedirectFlagValue;
-          },
+          () => this.ldRedirectFlagValue,
           () => {
             if (this.ldRedirectShouldRedirect) {
               this.$router.push(this.ldRedirectResolveTo);
@@ -89,5 +84,4 @@ export default (requiredFeatureFlag, to, invertFlag) => {
     deactivated() {
       this.ldRedirectHasBeenDeactivated = true;
     },
-  };
-};
+  });

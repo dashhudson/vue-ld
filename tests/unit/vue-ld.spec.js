@@ -8,12 +8,10 @@ const Component = {
   template: '<div></div>',
 };
 
-jest.mock('@/utils', () => {
-  return {
+jest.mock('@/utils', () => ({
     ...jest.requireActual('@/utils'),
     rethrow: jest.fn(),
-  };
-});
+  }));
 
 describe('VueLd Plugin', () => {
   let errorSpy;
