@@ -18,7 +18,7 @@ jobs:
           restore-keys: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm ci --force
   lint:
     needs: install
     runs-on: ubuntu-latest
