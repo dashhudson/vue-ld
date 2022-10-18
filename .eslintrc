@@ -4,11 +4,7 @@
     "node": true,
     "jest": true
   },
-  "extends": [
-    "plugin:vue/recommended",
-    "@vue/airbnb",
-    "prettier"
-  ],
+  "extends": ["plugin:vue/recommended", "@vue/airbnb", "prettier"],
   "rules": {
     "no-param-reassign": [
       "error",
