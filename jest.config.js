@@ -1,15 +1,18 @@
 module.exports = {
+  testEnvironment: 'jsdom',
   moduleFileExtensions: ['js', 'jsx', 'json', 'vue'],
   transform: {
-    '^.+\\.js$': 'babel-jest',
-    '^.+\\.vue$': 'vue-jest',
-    '.+\\.(svg|css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
-    '^.+\\.jsx?$': '<rootDir>/node_modules/babel-jest',
+    '^.+\\.vue$': '@vue/vue2-jest',
+    '.+\\.(css|styl|less|sass|scss|jpg|jpeg|png|svg|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|avif)$':
+      'jest-transform-stub',
+    '^.+\\.jsx?$': 'babel-jest',
   },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   collectCoverage: true,
+  coverageProvider: 'v8',
   collectCoverageFrom: ['**/*.{js,vue}', '!**/node_modules/**'],
+  coveragePathIgnorePatterns: ['<rootDir>/build/', '<rootDir>/node_modules/', '<rootDir>/tests/'],
   coverageReporters: ['json', 'lcov', 'clover', 'html'],
 };
