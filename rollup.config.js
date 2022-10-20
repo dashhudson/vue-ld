@@ -31,7 +31,7 @@ export default {
       babelrc: false,
       presets: [
         [
-          '@vue/babel-preset-app',
+          '@vue/cli-plugin-babel/preset',
           {
             debug: true,
             targets: { browsers: ['> 1%', 'last 2 versions', 'ie > 9'] },
