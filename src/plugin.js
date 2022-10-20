@@ -47,15 +47,13 @@ export const initialize = ({ clientSideId, user, ldOptions, readyBeforeIdentify 
   return $ld;
 };
 
-const stub = ({ flagsStub, readyBeforeIdentify }) => {
-  return {
+const stub = ({ flagsStub, readyBeforeIdentify }) => ({
     identify() {
       this.ready = true;
     },
     flags: flagsStub,
     ready: readyBeforeIdentify,
-  };
-};
+  });
 
 export default {
   async install(vue, options) {

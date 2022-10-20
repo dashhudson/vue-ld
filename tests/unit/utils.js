@@ -24,10 +24,8 @@ export const mount = async (component, { plugins, mixins, mocks, props }) => {
   return wrapper;
 };
 
-export const ldClientReady = (wrapper) => {
-  return new Promise((r) => {
+export const ldClientReady = (wrapper) => new Promise((r) => {
     wrapper.vm.$ld.ldClient.on('ready', () => {
       r();
     });
   });
-};

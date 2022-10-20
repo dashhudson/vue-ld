@@ -9,11 +9,9 @@ const Component = {
   template: '<div></div>',
 };
 
-const createMixin = (props) => {
-  return props
+const createMixin = (props) => props
     ? [ldRedirect(props.flag, props.redirect, props.invertFlag)]
     : [ldRedirect('myFlag', '/', false)];
-};
 
 describe('ldRedirectMixin', () => {
   let server;
@@ -82,9 +80,7 @@ describe('ldRedirectMixin', () => {
     flags.myFlag.value = false;
     server.respondWith([200, { 'Content-Type': 'application/json' }, JSON.stringify(flags)]);
     const redirectObj = { to: 'some.route' };
-    const redirectFunc = () => {
-      return redirectObj;
-    };
+    const redirectFunc = () => redirectObj;
     const wrapper = await createComponent(
       createMixin({ flag: 'myFlag', redirect: redirectFunc, invertFlag: false })
     );
