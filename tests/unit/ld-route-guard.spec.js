@@ -71,7 +71,9 @@ describe('LDRouteGuard', () => {
     flags.myFlag.value = false;
     server.respondWith([200, { 'Content-Type': 'application/json' }, JSON.stringify(flags)]);
 
-    const dynamicEmptyComponent = new Promise((resolve) => resolve(EmptyComponent));
+    const dynamicEmptyComponent = new Promise((resolve) => {
+      resolve(EmptyComponent)
+    });
     const wrapper = await createComponent(dynamicEmptyComponent);
     expect(wrapper.vm.$router.push).toHaveBeenCalled();
   });
