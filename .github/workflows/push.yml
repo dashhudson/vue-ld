@@ -21,7 +21,7 @@ jobs:
           restore-keys: ${{ runner.os }}-build-${{env.INSTALL_CACHE_NAME}}-
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm install --force
       - name: Testing
         run: npm run test:unit
       - name: Sending to Code Climate
