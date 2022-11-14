@@ -80,8 +80,8 @@
     }
   },
   "engines": {
-    "node": "16.10",
-    "npm": "8.3.1"
+    "node": ">=16.10",
+    "npm": ">=8.3.1"
   },
   "sideEffects": false
 }
