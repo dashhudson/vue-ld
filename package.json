@@ -58,7 +58,7 @@
     "launchdarkly-js-client-sdk": "^2.23.0",
     "prettier": "^2.7.1",
     "rollup": "^2.23.0",
-    "rollup-plugin-vue": "^5.1.9",
+    "rollup-plugin-vue": "^6.0.0",
     "sinon": "^9.0.3",
     "vue": "^2.6.11",
     "vue-router": "^3.6.5",
