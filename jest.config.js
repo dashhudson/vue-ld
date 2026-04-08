@@ -11,6 +11,13 @@ try {
 
 module.exports = {
   testEnvironment: 'jsdom',
+  testEnvironmentOptions: {
+    // Prevent jest-environment-jsdom from using the "browser" package export condition,
+    // which causes packages like @vue/test-utils to load their browser bundles instead
+    // of their Node.js-compatible CJS bundles.
+    customExportConditions: ['node', 'node-addons'],
+  },
+  setupFiles: ['./tests/setup.js'],
   moduleFileExtensions: ['js', 'jsx', 'json', 'vue'],
   transform: {
     '^.+\\.vue$': vueJest,

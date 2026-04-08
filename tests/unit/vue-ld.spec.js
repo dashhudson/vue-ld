@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import VueLd from '@/plugin';
 import { rethrow } from '@/utils';
 import { mount, ldClientReady } from './utils';
@@ -15,7 +14,6 @@ jest.mock('@/utils', () => ({
 
 describe('VueLd Plugin', () => {
   let errorSpy;
-  let server;
   let warnSpy;
 
   const createComponent = async (vueLdOptions = {}) => {
@@ -30,29 +28,19 @@ describe('VueLd Plugin', () => {
   };
 
   beforeEach(() => {
-    server = sinon.createFakeServer();
     warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
   });
 
   afterEach(() => {
-    server.restore();
     warnSpy.mockRestore();
     errorSpy.mockRestore();
+    jest.restoreAllMocks();
   });
 
   describe('Success states', () => {
-    beforeEach(() => {
-      server.autoRespond = true;
-      server.autoRespondAfter = 0;
-      server.respondWith([
-        200,
-        { 'Content-Type': 'application/json' },
-        JSON.stringify(flagsResponse),
-      ]);
-    });
     it('changes ready state before identify', async () => {
-      const wrapper = await createComponent();
+      const wrapper = await createComponent({ bootstrap: flagsResponse });
 
       expect(wrapper.vm.$ld).not.toBe(undefined);
       expect(wrapper.vm.$ld.ready).toBeFalsy();
@@ -63,7 +51,10 @@ describe('VueLd Plugin', () => {
     });
 
     it('changes ready state after identify', async () => {
-      const wrapper = await createComponent({ readyBeforeIdentify: false });
+      const wrapper = await createComponent({
+        bootstrap: flagsResponse,
+        readyBeforeIdentify: false,
+      });
 
       expect(wrapper.vm.$ld).not.toBe(undefined);
       expect(wrapper.vm.$ld.ready).toBeFalsy();
@@ -71,7 +62,8 @@ describe('VueLd Plugin', () => {
       await ldClientReady(wrapper);
       expect(wrapper.vm.$ld.ready).toBeFalsy();
       await wrapper.vm.$ld.identify({
-        newUser: {
+        newContext: {
+          kind: 'user',
           key: 'anonymous2',
           email: 'anonymous2@test.com',
           name: 'Anonymous User 2',
@@ -81,12 +73,16 @@ describe('VueLd Plugin', () => {
     });
 
     it('calls vueLdCallback after ready with correct context', async () => {
-      const wrapper = await createComponent({ readyBeforeIdentify: false });
+      const wrapper = await createComponent({
+        bootstrap: flagsResponse,
+        readyBeforeIdentify: false,
+      });
       const vueLdCallback = jest.fn();
       await ldClientReady(wrapper);
       await wrapper.vm.$ld.identify(
         {
-          newUser: {
+          newContext: {
+            kind: 'user',
             key: 'anonymous2',
             email: 'anonymous2@test.com',
             name: 'Anonymous User 2',
@@ -130,18 +126,12 @@ describe('VueLd Plugin', () => {
   });
 
   describe('Error states', () => {
-    beforeEach(() => {
-      server.autoRespond = true;
-      server.autoRespondAfter = 0;
-      server.respondWith([
-        400,
-        { 'Content-Type': 'application/json' },
-        JSON.stringify({ message: 'Bad Request' }),
-      ]);
-    });
-
     it('should set error when ldClient emits an error', async () => {
-      const wrapper = await createComponent();
+      // An empty string key is invalid and causes the SDK to emit an 'error' event
+      const wrapper = await createComponent({
+        context: { kind: 'user', key: '' },
+        bootstrap: {},
+      });
       await ldClientReady(wrapper);
       expect(wrapper.vm.$ld.error).toBeTruthy();
       // Should not eat errors

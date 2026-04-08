@@ -1,15 +1,17 @@
-import * as LDClient from 'launchdarkly-js-client-sdk';
+import { createClient } from '@launchdarkly/js-client-sdk';
 import { isVue2, reactive } from 'vue-demi';
 import { formatFlags, rethrow } from './utils';
 
-export const initialize = ({ clientSideId, user, ldOptions, readyBeforeIdentify }) => {
-  const ldClient = LDClient.initialize(clientSideId, user, ldOptions);
+export const initialize = ({ clientSideId, context, ldOptions, readyBeforeIdentify, bootstrap }) => {
+  const ldClient = createClient(clientSideId, context, ldOptions);
+
   const $ld = reactive({
     ldClient,
-    identify({ newUser, hash, callback }, vueLdCallback) {
+    identify({ newContext, hash, callback }, vueLdCallback) {
       return new Promise((r) => {
         this.ready = false;
-        ldClient.identify(newUser, hash, callback).then(() => {
+        ldClient.identify(newContext, hash !== undefined ? { hash } : undefined).then(() => {
+          if (callback) callback();
           this.ready = true;
           if (vueLdCallback) {
             const boundVueLdCallback = vueLdCallback.bind($ld);
@@ -29,20 +31,18 @@ export const initialize = ({ clientSideId, user, ldOptions, readyBeforeIdentify 
     $ld.ready = readyBeforeIdentify;
   });
 
-  ldClient.on('change', (changes) => {
-    const flattenedFlags = Object.fromEntries(
-      Object.keys(changes).map((key) => [key, changes[key].current])
-    );
-    $ld.flags = {
-      ...$ld.flags,
-      ...formatFlags(flattenedFlags),
-    };
+  ldClient.on('change', () => {
+    $ld.flags = { ...formatFlags(ldClient.allFlags()) };
   });
 
   ldClient.on('error', (e) => {
     $ld.error = e;
     rethrow(e);
   });
+
+  // Start AFTER registering event listeners, as the SDK recommends.
+  // Pass bootstrap data if provided so the client can initialize without a network request.
+  ldClient.start(bootstrap !== undefined ? { bootstrap } : undefined);
 
   return $ld;
 };
@@ -59,8 +59,9 @@ export default {
   async install(vue, options) {
     const {
       clientSideId,
-      user,
+      context,
       options: ldOptions,
+      bootstrap,
       flagsStub,
       readyBeforeIdentify = true,
     } = options;
@@ -70,7 +71,7 @@ export default {
     if (flagsStub) {
       $ld = stub({ flagsStub, readyBeforeIdentify });
     } else {
-      $ld = initialize({ clientSideId, user, ldOptions, readyBeforeIdentify });
+      $ld = initialize({ clientSideId, context, ldOptions, readyBeforeIdentify, bootstrap });
     }
 
     if (isVue2) {

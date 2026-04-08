@@ -1,5 +1,3 @@
-import sinon from 'sinon';
-import { cloneDeep } from 'lodash';
 import ldRedirect from '@/mixins/ldRedirect';
 import VueLd from '@/plugin';
 import { mount, ldClientReady } from './utils';
@@ -14,11 +12,10 @@ const createMixin = (props) => props
     : [ldRedirect('myFlag', '/', false)];
 
 describe('ldRedirectMixin', () => {
-  let server;
   let mocks;
 
-  const createComponent = async (mixins) => {
-    const VueLdPlugin = [VueLd, defaultVueLdOptions];
+  const createComponent = async (mixins, bootstrapFlags = flagsResponse) => {
+    const VueLdPlugin = [VueLd, { ...defaultVueLdOptions, bootstrap: bootstrapFlags }];
     mocks = {
       $router: { push: jest.fn() },
     };
@@ -31,31 +28,17 @@ describe('ldRedirectMixin', () => {
     return wrapper;
   };
 
-  beforeEach(() => {
-    server = sinon.createFakeServer();
-    server.autoRespond = true;
-    server.autoRespondAfter = 0;
-  });
-
   afterEach(() => {
-    server.restore();
+    jest.restoreAllMocks();
   });
 
   it('redirects without feature flag', async () => {
-    const flags = cloneDeep(flagsResponse);
-    flags.myFlag.value = false;
-    server.respondWith([200, { 'Content-Type': 'application/json' }, JSON.stringify(flags)]);
-    const wrapper = await createComponent(createMixin());
+    const wrapper = await createComponent(createMixin(), { myFlag: false });
     expect(wrapper.vm.$ld.flags.myFlag).toBeFalsy();
     expect(wrapper.vm.$router.push).toHaveBeenCalled();
   });
 
   it('does not redirect with feature flag & destroys watchers', async () => {
-    server.respondWith([
-      200,
-      { 'Content-Type': 'application/json' },
-      JSON.stringify(flagsResponse),
-    ]);
     const wrapper = await createComponent(createMixin());
     expect(wrapper.vm.$ld.flags.myFlag).toBeTruthy();
     expect(wrapper.vm.$router.push).not.toHaveBeenCalled();
@@ -64,36 +47,30 @@ describe('ldRedirectMixin', () => {
   });
 
   it('correctly handles redirect as object', async () => {
-    const flags = cloneDeep(flagsResponse);
-    flags.myFlag.value = false;
-    server.respondWith([200, { 'Content-Type': 'application/json' }, JSON.stringify(flags)]);
     const redirectObj = { to: 'some.route' };
     const wrapper = await createComponent(
-      createMixin({ flag: 'myFlag', redirect: redirectObj, invertFlag: false })
+      createMixin({ flag: 'myFlag', redirect: redirectObj, invertFlag: false }),
+      { myFlag: false }
     );
     expect(wrapper.vm.$ld.flags.myFlag).toBeFalsy();
     expect(wrapper.vm.$router.push).toBeCalledWith(redirectObj);
   });
 
   it('correctly handles redirect as function', async () => {
-    const flags = cloneDeep(flagsResponse);
-    flags.myFlag.value = false;
-    server.respondWith([200, { 'Content-Type': 'application/json' }, JSON.stringify(flags)]);
     const redirectObj = { to: 'some.route' };
     const redirectFunc = () => redirectObj;
     const wrapper = await createComponent(
-      createMixin({ flag: 'myFlag', redirect: redirectFunc, invertFlag: false })
+      createMixin({ flag: 'myFlag', redirect: redirectFunc, invertFlag: false }),
+      { myFlag: false }
     );
     expect(wrapper.vm.$ld.flags.myFlag).toBeFalsy();
     expect(wrapper.vm.$router.push).toBeCalledWith(redirectObj);
   });
 
   it('redirects on true featureflag if invertFlag is set', async () => {
-    const flags = cloneDeep(flagsResponse);
-    flags.myFlag.value = true;
-    server.respondWith([200, { 'Content-Type': 'application/json' }, JSON.stringify(flags)]);
     const wrapper = await createComponent(
-      createMixin({ flag: 'myFlag', redirect: { to: 'some.route' }, invertFlag: true })
+      createMixin({ flag: 'myFlag', redirect: { to: 'some.route' }, invertFlag: true }),
+      { myFlag: true }
     );
     expect(wrapper.vm.$ld.flags.myFlag).toBeTruthy();
     expect(wrapper.vm.$router.push).toHaveBeenCalled();

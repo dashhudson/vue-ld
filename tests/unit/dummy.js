@@ -1,12 +1,14 @@
 export const defaultVueLdOptions = {
   clientSideId: 'superSecretToken',
-  user: {
+  context: {
+    kind: 'user',
     key: 'anonymous',
     email: 'anonymous@test.com',
     name: 'Anonymous User',
   },
 };
 
+// Simple key-value format compatible with the SDK's bootstrap option and allFlags()
 export const flagsResponse = {
-  myFlag: { version: 1, flagVersion: 1, value: true, variation: 1, trackEvents: false },
+  myFlag: true,
 };
