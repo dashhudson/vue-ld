@@ -1,4 +1,4 @@
-import { h, isVue3 } from 'vue-demi';
+import { h } from 'vue';
 import ldRedirectMixin from '../mixins/ldRedirect';
 
 const LDRouteGuard = {
@@ -25,12 +25,9 @@ const LDRouteGuard = {
   created() {
     this.ldRedirectTo = this.to;
   },
-  render(createElement) {
+  render() {
     if (this.show) {
-      if (isVue3) {
-        return h(this.importedComponent, { ...this.componentProps });
-      }
-      return createElement(this.importedComponent, { props: this.componentProps });
+      return h(this.importedComponent, { ...this.componentProps });
     }
     return null;
   },

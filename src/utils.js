@@ -1,4 +1,4 @@
-import camelCase from 'lodash/camelCase';
+const camelCase = (str) => str.replace(/[-_\s]+(.)/g, (_, c) => c.toUpperCase());
 
 export const formatFlags = (flags) => Object.fromEntries(
     Object.keys(flags).map((key) => [camelCase(key), flags[key]])

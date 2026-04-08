@@ -7,7 +7,7 @@ const name = 'vue-ld';
 
 export default {
   input: 'src/index.js',
-  external: ['launchdarkly-js-client-sdk', 'lodash', 'vue-demi'],
+  external: ['@launchdarkly/js-client-sdk', 'vue'],
   output: [
     {
       name,
@@ -34,7 +34,7 @@ export default {
           '@vue/cli-plugin-babel/preset',
           {
             debug: true,
-            targets: { browsers: ['> 1%', 'last 2 versions', 'ie > 9'] },
+            targets: { browsers: ['> 1%', 'last 2 versions'] },
             modules: false,
           },
         ],
